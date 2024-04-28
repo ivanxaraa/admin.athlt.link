@@ -51,6 +51,7 @@ interface DataTableProps<TData, TValue> {
   };
   hide?: {
     columns?: boolean;
+    filter?: boolean;
   };
 }
 
@@ -85,7 +86,9 @@ export function DataTable<TData, TValue>({
   return (
     <div className="!text-xs">
       {/* handlers */}
+      {!hide?.columns || !hide?.filter && (
       <div className="flex items-center justify-between gap-4 pb-4">
+        {hide?.filter && (
         <div className="flex w-full items-center gap-4">
           <Input
             placeholder="Filter by username..."
@@ -93,9 +96,10 @@ export function DataTable<TData, TValue>({
             onChange={(event) =>
               table.getColumn("username")?.setFilterValue(event.target.value)
             }
-            className="max-w-sm !border-none text-xs"
+            className="max-w-sm !border text-xs"
           />
         </div>
+        )}
         <div className="flex items-center gap-4">
           {actions && !!table.getFilteredSelectedRowModel().rows.length && (
             <DropdownMenu>
@@ -164,6 +168,7 @@ export function DataTable<TData, TValue>({
           )}
         </div>
       </div>
+      )}
       {/* table */}
       <div className="rounded-md bg-white">
         <Table className="text-xs">

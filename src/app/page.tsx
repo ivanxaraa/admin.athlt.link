@@ -11,7 +11,7 @@ export default function Home() {
   const [cards, setCards] = useState<any>([]);
 
   const getCards = async () => {
-    const { data } = await supabase.rpc("count_rows_tables");
+    const { data } = await supabase.rpc("count_tables_dashboard");
     setCards([
       {
         label: "Users",
@@ -40,9 +40,6 @@ export default function Home() {
       .map((cookie) => cookie.split("="));
     const accessTokenCookie = cookies.find((x) => x[0] == "my-access-token");
     const refreshTokenCookie = cookies.find((x) => x[0] == "my-refresh-token");
-
-    console.log(accessTokenCookie);
-    
 
     if (accessTokenCookie && refreshTokenCookie) {
       await supabase.auth.setSession({
