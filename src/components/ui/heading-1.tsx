@@ -8,7 +8,7 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
   back?: string;
   buttons?: {
     label: string;
-    click?: Function;
+    click?: () => void;
   }[];
 };
 
@@ -22,7 +22,7 @@ const Heading1 = ({ children, back, buttons }: Props) => {
       )}
       {children}
       <div className="ml-auto flex gap-4">
-        {buttons && buttons.map((button) => <Button key={button?.label}>{button?.label}</Button>)}
+        {buttons && buttons.map((button) => <Button key={button?.label} onClick={button.click}>{button?.label}</Button>)}
       </div>
     </div>
   );
