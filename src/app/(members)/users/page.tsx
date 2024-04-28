@@ -6,7 +6,7 @@ import { columns } from "./columns";
 import Heading1 from "@/components/ui/heading-1";
 import { usersControl } from "@/controllers/usersControl";
 
-const page = () => {
+const Page = () => {
   const [users, setUsers] = useState<any>([]);
 
   const getUsers = async () => {
@@ -26,4 +26,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
