@@ -4,7 +4,7 @@ export const env = {
 
 export const icon_size = {
   navbar: {
-    size: 20,
+    size: 18,
     strokeWidth: 1,
   },
   buttons: {},
