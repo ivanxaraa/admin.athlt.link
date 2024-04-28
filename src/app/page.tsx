@@ -34,6 +34,13 @@ export default function Home() {
         icon: <User {...icon_size.navbar} />,
       },
     ]);
+
+    const session = await supabase.auth.getSession();
+    console.log({ session });
+
+    const auth = await supabase.auth.getUser();
+    console.log({ auth });
+
   };
 
   useEffect(() => {
