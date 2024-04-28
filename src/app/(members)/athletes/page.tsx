@@ -6,7 +6,7 @@ import { columns } from "./columns";
 import Heading1 from "@/components/ui/heading-1";
 import { athletesControl } from "@/controllers/athletesControl";
 
-const page = () => {
+const Page = () => {
   const [athletes, setAthletes] = useState<any>([]);
 
   const getAthletes = async () => {
@@ -28,4 +28,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
