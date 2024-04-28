@@ -1,12 +1,30 @@
+import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
 import React, { ReactNode } from "react";
+import { Button } from "./button";
 
-type Heading1Props = React.HTMLAttributes<HTMLDivElement> & {
+type Props = React.HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
+  back?: string;
+  buttons?: {
+    label: string;
+    click?: Function;
+  }[];
 };
 
-const Heading1 = ({ children }: Heading1Props) => {
+const Heading1 = ({ children, back, buttons }: Props) => {
   return (
-    <div className="flex items-center gap-2 font-light pb-4">{children}</div>
+    <div className="flex h-10 items-center gap-2 font-light pb-4 w-full">
+      {back && (
+        <Link href={back} className="hover:bg-primary rounded-md p-0.5">
+          <ChevronLeft size={16} strokeWidth={1} />
+        </Link>
+      )}
+      {children}
+      <div className="ml-auto flex gap-4">
+        {buttons && buttons.map((button) => <Button key={button?.label}>{button?.label}</Button>)}
+      </div>
+    </div>
   );
 };
 

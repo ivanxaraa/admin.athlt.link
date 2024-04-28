@@ -7,7 +7,7 @@ function DashboardCard({
   icon,
 }: {
   label: string;
-  value: string | number;
+  value: any;
   icon: any;
 }) {
   return (

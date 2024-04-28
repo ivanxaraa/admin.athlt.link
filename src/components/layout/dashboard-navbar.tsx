@@ -1,16 +1,20 @@
 "use client";
 
 import {
+  Award,
   BadgeCheck,
   Book,
   BookOpen,
+  Building2,
   Clock,
+  Globe2,
   Layers,
   LayoutDashboard,
   Package,
   Tags,
   User,
   Users,
+  UsersRound,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -41,7 +45,7 @@ const DashboardNavbar = () => {
         },
         {
           name: "Athletes",
-          icon: <Users {...icon_size.navbar} />,
+          icon: <Award {...icon_size.navbar} />,
           href: "/athletes",
         },
         {
@@ -56,13 +60,13 @@ const DashboardNavbar = () => {
       links: [
         {
           name: "Clubs",
-          icon: <Users {...icon_size.navbar} />,
-          href: "/atheletes",
+          icon: <Building2 {...icon_size.navbar} />,
+          href: "/clubs",
         },
         {
           name: "Teams",
-          icon: <Users {...icon_size.navbar} />,
-          href: "/atheletes",
+          icon: <UsersRound {...icon_size.navbar} />,
+          href: "/teams",
         },
       ],
     },
@@ -74,8 +78,8 @@ const DashboardNavbar = () => {
           <Image src={Logo} alt="Logo" className="size-6" />
         </div>
         <div className="flex flex-col gap-8">
-          {groups.map((group: any) => (
-            <div key={group.name} className="flex flex-col gap-2">
+          {groups.map((group: any, index: number) => (
+            <div key={index} className="flex flex-col gap-2">
               {group.name && (
                 <span className="text-xs text-gray-500">{group.name}</span>
               )}
@@ -84,7 +88,8 @@ const DashboardNavbar = () => {
                   key={link.href}
                   href={link.href}
                   className={`flex w-full items-center gap-2 rounded-md p-3 text-left text-xs font-medium ${
-                    pathname === link.href
+                    (pathname === "/" && link.href === "/") ||
+                    (pathname.startsWith(link.href) && link.href !== "/")
                       ? "bg-primary "
                       : "hover:bg-primary/20"
                   }`}
