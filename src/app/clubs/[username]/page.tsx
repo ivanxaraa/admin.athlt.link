@@ -5,18 +5,18 @@ import FormRow from "@/components/ui/form-row";
 import Heading1 from "@/components/ui/heading-1";
 import { Input } from "@/components/ui/input";
 import { clubsControl } from "@/controllers/clubsControl";
-import { icon_size } from "@/utils/constants";
+import { env, icon_size } from "@/utils/constants";
 import { UsersRound } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import React, { useEffect, useState } from "react";
 import GroupForm from "@/components/ui/group-form";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import { copy } from "@/utils/copy";
 import { columns } from "./columns";
+import { useRouter } from "next/navigation";
 
 const Information = ({ club }: any) => {
-  console.log(club);
-  
   return (
     <div className=" bg-white rounded-lg">
       <div className="flex flex-col gap-16">
@@ -50,7 +50,11 @@ const Information = ({ club }: any) => {
         {/* payments */}
         <GroupForm label="Payments">
           <FormRow label="Affiliate Commission">
-            <Input defaultValue={club.affiliate_fee} type="number" placeholder="%" />
+            <Input
+              defaultValue={club.affiliate_fee}
+              type="number"
+              placeholder="%"
+            />
           </FormRow>
           <FormRow label="TeamLink Fee">
             <Input defaultValue={club.fee} type="number" placeholder="$" />
@@ -59,24 +63,40 @@ const Information = ({ club }: any) => {
         {/* socials */}
         <GroupForm label="Socials">
           <FormRow label="Instagram">
-            <Input defaultValue={club.instagram} placeholder="www.instagram.com/username" />
+            <Input
+              defaultValue={club.instagram}
+              placeholder="www.instagram.com/username"
+            />
           </FormRow>
           <FormRow label="Snapchat">
-            <Input defaultValue={club.snapchat} placeholder="www.snapchat.com/username" />
+            <Input
+              defaultValue={club.snapchat}
+              placeholder="www.snapchat.com/username"
+            />
           </FormRow>
           <FormRow label="X / Twitter">
-            <Input defaultValue={club.twitter} placeholder="www.twitter.com/username" />
+            <Input
+              defaultValue={club.twitter}
+              placeholder="www.twitter.com/username"
+            />
           </FormRow>
           <FormRow label="Tiktok">
-            <Input defaultValue={club.tiktok} placeholder="www.tiktok.com/username" />
+            <Input
+              defaultValue={club.tiktok}
+              placeholder="www.tiktok.com/username"
+            />
           </FormRow>
         </GroupForm>
         {/* contacts */}
         <GroupForm label="Contacts">
           <FormRow label="Email">
-            <Input defaultValue={club.email} type="email" placeholder="example@gmail.com" />
+            <Input
+              defaultValue={club.email}
+              type="email"
+              placeholder="example@gmail.com"
+            />
           </FormRow>
-          <FormRow label="Snapchat">
+          <FormRow label="Phone">
             <Input defaultValue={club.phone} type="number" placeholder="+351" />
           </FormRow>
         </GroupForm>
@@ -87,9 +107,10 @@ const Information = ({ club }: any) => {
 
 function Page({ params }: { params: { username: string } }) {
   const { username } = params;
+  const router = useRouter();
   const [club, setClub] = useState<any>({});
   const [teams, setTeams] = useState<any>([]);
-  const [activals, setActivals] = useState<{ section: any; }>({
+  const [activals, setActivals] = useState<{ section: any }>({
     section: "Information",
   });
 
@@ -113,44 +134,54 @@ function Page({ params }: { params: { username: string } }) {
 
   return (
     <>
-    
       <Heading1
         back="/clubs"
-        buttons={[{ label: "Copy Admin Link" }, { label: "Club Dashboard" }]}
+        buttons={[
+          { label: "Copy Admin Link", click: () => copy(club.associate_code) },
+          {
+            label: "Club Dashboard",
+            click: () => router.push(`https://athlt.link/d/${club.username}`),
+          },
+        ]}
       >
         {club.name}
       </Heading1>
 
       <div className="bg-white flex items-center gap-4 p-6 mt-4">
         {["Information", "Teams"].map((section, index) => (
-        <button key={index} onClick={() => handleActivals('section', section)} className={`px-6 py-2 text-xs rounded-full ${section === activals.section ? 'bg-primary' : ''}`}>
-          {section}
-        </button>
+          <button
+            key={index}
+            onClick={() => handleActivals("section", section)}
+            className={`px-6 py-2 text-xs rounded-full ${
+              section === activals.section ? "bg-primary" : ""
+            }`}
+          >
+            {section}
+          </button>
         ))}
       </div>
 
-      {activals.section === 'Information' && (
-      <div className="bg-white p-8 mt-4">
-        <span className="text-lg">Information</span>
-        <div className="mt-8">
-          <Information club={club} />
+      {activals.section === "Information" && (
+        <div className="bg-white p-8 mt-4">
+          <span className="text-lg">Information</span>
+          <div className="mt-8">
+            <Information club={club} />
+          </div>
         </div>
-      </div>
       )}
 
-      {activals.section === 'Teams' && (
-      <div className="bg-white p-8 mt-4">
-        <span className="text-lg">Teams</span>
-        <div className="mt-8">
-          <DataTable
-            columns={columns()}
-            data={teams}
-            hide={{ columns: true, filter: true }}
-          />
+      {activals.section === "Teams" && (
+        <div className="bg-white p-8 mt-4">
+          <span className="text-lg">Teams</span>
+          <div className="mt-8">
+            <DataTable
+              columns={columns()}
+              data={teams}
+              hide={{ columns: true, filter: true }}
+            />
+          </div>
         </div>
-      </div>
       )}
-
     </>
   );
 }
