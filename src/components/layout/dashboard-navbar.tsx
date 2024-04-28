@@ -35,14 +35,19 @@ const DashboardNavbar = () => {
       name: "Members",
       links: [
         {
-          name: "Atheletes",
+          name: "All Users",
           icon: <Users {...icon_size.navbar} />,
-          href: "/atheletes",
+          href: "/users",
+        },
+        {
+          name: "Athletes",
+          icon: <Users {...icon_size.navbar} />,
+          href: "/athletes",
         },
         {
           name: "Paid Members",
           icon: <BadgeCheck {...icon_size.navbar} />,
-          href: "/atheletes",
+          href: "/paid-users",
         },
       ],
     },
@@ -65,30 +70,36 @@ const DashboardNavbar = () => {
   return (
     <div className="fixed left-0 top-0 h-full w-[220px] bg-foreground">
       <div className="flex flex-col gap-8 px-4 py-8">
-        <Image src={Logo} alt="Logo" className="size-8" />
-        {groups.map((group: any) => (
-          <div key={group.name} className="flex flex-col gap-2">
-            {group.name && (
-              <span className="text-xs text-gray-500">{group.name}</span>
-            )}
-            {group.links.map((link: any) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`flex w-full items-center gap-2 rounded-md p-3 text-left text-xs font-medium hover:bg-primary/100  ${
-                  pathname === link.href
-                    ? "bg-primary text-white"
-                    : "text-black"
-                }`}
-              >
-                <div>{link.icon}</div>
-                <span>{link.name}</span>
-              </Link>
-            ))}
-          </div>
-        ))}
+        <div className="px-3">
+          <Image src={Logo} alt="Logo" className="size-6" />
+        </div>
+        <div className="flex flex-col gap-8">
+          {groups.map((group: any) => (
+            <div key={group.name} className="flex flex-col gap-2">
+              {group.name && (
+                <span className="text-xs text-gray-500">{group.name}</span>
+              )}
+              {group.links.map((link: any) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`flex w-full items-center gap-2 rounded-md p-3 text-left text-xs font-medium ${
+                    pathname === link.href
+                      ? "bg-primary "
+                      : "hover:bg-primary/20"
+                  }`}
+                >
+                  <div>{link.icon}</div>
+                  <span>{link.name}</span>
+                </Link>
+              ))}
+            </div>
+          ))}
+        </div>
         <div className="absolute bottom-8 p-2 w-full">
-
+          <div className="flex">
+            <div className="size-4 bg-green-50"></div>
+          </div>
         </div>
       </div>
     </div>

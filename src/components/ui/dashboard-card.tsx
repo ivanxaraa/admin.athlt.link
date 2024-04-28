@@ -11,10 +11,10 @@ function DashboardCard({
   icon: any;
 }) {
   return (
-    <button className="bg-white p-6 relative text-left rounded-lg w-[300px]">
+    <button className="bg-primary p-4 relative text-left rounded-lg w-[300px]">
       <div className="relative flex flex-col justify-center">
-        <span className="font-light text-base">{label}</span>
-        <span className="font-bold text-2xl">{value}</span>
+        <span className="font-light text-xs">{label}</span>
+        <span className="font-bold text-xl ">{value}</span>
         <div className="absolute right-0">{icon}</div>
       </div>
     </button>
