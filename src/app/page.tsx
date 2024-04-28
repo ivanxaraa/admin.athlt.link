@@ -35,12 +35,26 @@ export default function Home() {
       },
     ]);
 
-    const session = await supabase.auth.getSession();
-    console.log({ session });
+    const cookies = document.cookie
+      .split(/\s*;\s*/)
+      .map((cookie) => cookie.split("="));
+    const accessTokenCookie = cookies.find((x) => x[0] == "my-access-token");
+    const refreshTokenCookie = cookies.find((x) => x[0] == "my-refresh-token");
 
-    const auth = await supabase.auth.getUser();
-    console.log({ auth });
+    console.log(accessTokenCookie);
+    
 
+    if (accessTokenCookie && refreshTokenCookie) {
+      await supabase.auth.setSession({
+        access_token: accessTokenCookie[1],
+        refresh_token: refreshTokenCookie[1],
+      });
+    }
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    console.log(user);
   };
 
   useEffect(() => {
