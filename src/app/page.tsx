@@ -1,50 +1,66 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BadgeCheck, User, Users } from "lucide-react";
+import { Award, BadgeCheck, Building2, User, Users } from "lucide-react";
 import DashboardCard from "@/components/ui/dashboard-card";
 import Heading1 from "@/components/ui/heading-1";
 import { supabase } from "@/lib/supabase";
 import { icon_size } from "@/utils/constants";
 
-export default function Home() {
-  const [cards, setCards] = useState<any>([]);
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+interface CardData {
+  label: string;
+  value: number;
+  icon: JSX.Element;
+}
+
+export default function Home(): JSX.Element {
+  const [cards, setCards] = useState<CardData[]>([]);
 
   const getCards = async () => {
     const { data } = await supabase.rpc("count_tables_dashboard");
-    setCards([
+    const cardData: CardData[] = [
       {
-        label: "Users",
+        label: "Total of Users",
         value: data.users,
         icon: <Users {...icon_size.navbar} />,
       },
       {
-        label: "Paid Members",
+        label: "Total of Paid Members",
         value: data.subscriptions,
         icon: <BadgeCheck {...icon_size.navbar} />,
       },
       {
-        label: "Athletes",
+        label: "Total of Athletes",
         value: data.athletes,
-        icon: <User {...icon_size.navbar} />,
+        icon: <Award {...icon_size.navbar} />,
       },
       {
-        label: "Clubs",
+        label: "Total of Clubs",
         value: data.clubs,
-        icon: <User {...icon_size.navbar} />,
+        icon: <Building2 {...icon_size.navbar} />,
       },
-    ]);
+    ];
 
-    const cookies = document.cookie
-      .split(/\s*;\s*/)
-      .map((cookie) => cookie.split("="));
-    const accessTokenCookie = cookies.find((x) => x[0] == "my-access-token");
-    const refreshTokenCookie = cookies.find((x) => x[0] == "my-refresh-token");
+    setCards(cardData);
 
-    if (accessTokenCookie && refreshTokenCookie) {
+    const cookies = Object.fromEntries(
+      document.cookie.split("; ").map((cookie) => cookie.split("="))
+    );
+    const accessToken = cookies["my-access-token"];
+    const refreshToken = cookies["my-refresh-token"];
+
+    if (accessToken && refreshToken) {
       await supabase.auth.setSession({
-        access_token: accessTokenCookie[1],
-        refresh_token: refreshTokenCookie[1],
+        access_token: accessToken,
+        refresh_token: refreshToken,
       });
     }
 
@@ -61,14 +77,22 @@ export default function Home() {
   return (
     <main>
       <Heading1>Dashboard</Heading1>
-      <div className="flex gap-4">
-        {cards.map((card: any, index: number) => (
-          <DashboardCard
-            key={index}
-            label={card.label}
-            value={card.value}
-            icon={card.icon}
-          />
+      <div className="flex gap-4 w-full">
+        {cards.map((card: CardData, index: number) => (
+          <Card key={index} className="w-full bg-primary">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                {card.label}
+              </CardTitle>
+              {card.icon}
+            </CardHeader>
+            <CardContent>
+              <div className="text-xl font-bold">{card.value}</div>
+              {/* <p className="text-xs text-muted-foreground">
+                +20.1% from last month
+              </p> */}
+            </CardContent>
+          </Card>
         ))}
       </div>
     </main>
