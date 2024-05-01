@@ -157,7 +157,7 @@ function Page({ params }: { params: { username: string } }) {
               />
             </FormRow>
             <FormRow className="col-span-2" label="Other Socials">
-              <RowManipulator data={x}>
+              <RowManipulator data={club.socials}>
                 <Input key="label" placeholder="Label" />
                 <Input key="url" placeholder="url" />
               </RowManipulator>
