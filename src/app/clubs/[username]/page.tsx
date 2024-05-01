@@ -15,95 +15,9 @@ import { DataTable } from "@/components/ui/data-table";
 import { copy } from "@/utils/copy";
 import { columns } from "./columns";
 import { useRouter } from "next/navigation";
-
-const Information = ({ club }: any) => {
-  return (
-    <div className=" bg-white rounded-lg">
-      <div className="flex flex-col gap-16">
-        {/* club */}
-        <GroupForm label="Details">
-          <FormRow className="col-span-2" label="">
-            <Avatar className="size-24 rounded-md">
-              <AvatarImage src={club.logo} />
-              <AvatarFallback></AvatarFallback>
-            </Avatar>
-          </FormRow>
-          <FormRow label="Username">
-            <Input defaultValue={club.username} />
-          </FormRow>
-          <FormRow label="Club Name">
-            <Input defaultValue={club.name} placeholder="Club name" />
-          </FormRow>
-          <FormRow label="Country">
-            <Input type="number" />
-          </FormRow>
-          <FormRow label="State">
-            <Input type="number" />
-          </FormRow>
-          <FormRow label="County">
-            <Input type="number" />
-          </FormRow>
-          <FormRow label="Website">
-            <Input type="text" placeholder="www.example.com" />
-          </FormRow>
-        </GroupForm>
-        {/* payments */}
-        <GroupForm label="Payments">
-          <FormRow label="Affiliate Commission">
-            <Input
-              defaultValue={club.affiliate_fee}
-              type="number"
-              placeholder="%"
-            />
-          </FormRow>
-          <FormRow label="TeamLink Fee">
-            <Input defaultValue={club.fee} type="number" placeholder="$" />
-          </FormRow>
-        </GroupForm>
-        {/* socials */}
-        <GroupForm label="Socials">
-          <FormRow label="Instagram">
-            <Input
-              defaultValue={club.instagram}
-              placeholder="www.instagram.com/username"
-            />
-          </FormRow>
-          <FormRow label="Snapchat">
-            <Input
-              defaultValue={club.snapchat}
-              placeholder="www.snapchat.com/username"
-            />
-          </FormRow>
-          <FormRow label="X / Twitter">
-            <Input
-              defaultValue={club.twitter}
-              placeholder="www.twitter.com/username"
-            />
-          </FormRow>
-          <FormRow label="Tiktok">
-            <Input
-              defaultValue={club.tiktok}
-              placeholder="www.tiktok.com/username"
-            />
-          </FormRow>
-        </GroupForm>
-        {/* contacts */}
-        <GroupForm label="Contacts">
-          <FormRow label="Email">
-            <Input
-              defaultValue={club.email}
-              type="email"
-              placeholder="example@gmail.com"
-            />
-          </FormRow>
-          <FormRow label="Phone">
-            <Input defaultValue={club.phone} type="number" placeholder="+351" />
-          </FormRow>
-        </GroupForm>
-      </div>
-    </div>
-  );
-};
+import { Combobox } from "@/components/ui/combobox";
+import selectors from "@/utils/selectors";
+import RowManipulator from "@/components/ui/row-manipulator";
 
 function Page({ params }: { params: { username: string } }) {
   const { username } = params;
@@ -132,6 +46,8 @@ function Page({ params }: { params: { username: string } }) {
     fetch();
   }, []);
 
+  const x = [{ label: "teste", url: "teste url" }];
+
   return (
     <>
       <Heading1
@@ -147,13 +63,16 @@ function Page({ params }: { params: { username: string } }) {
         {club.name}
       </Heading1>
 
-      <div className="bg-white flex items-center gap-4 p-6 mt-4">
+      {/* tabs */}
+      <div className="flex items-center gap-4  mt-4">
         {["Information", "Teams"].map((section, index) => (
           <button
             key={index}
             onClick={() => handleActivals("section", section)}
             className={`px-6 py-2 text-xs rounded-full ${
-              section === activals.section ? "bg-primary" : ""
+              section === activals.section
+                ? "bg-primary border-primary text-white"
+                : "border bg-white"
             }`}
           >
             {section}
@@ -161,15 +80,130 @@ function Page({ params }: { params: { username: string } }) {
         ))}
       </div>
 
-      {activals.section === "Information" && (
-        <div className="bg-white p-8 mt-4">
-          <span className="text-lg">Information</span>
-          <div className="mt-8">
-            <Information club={club} />
-          </div>
+      {/* information */}
+      {activals.section === "Information" && club.id && (
+        <div className="mt-4 rounded-lg flex flex-col gap-16">
+          {/* club */}
+          <GroupForm label="Details">
+            <FormRow className="col-span-2" label="">
+              <Avatar className="size-24 rounded-md">
+                <AvatarImage src={club.logo} />
+                <AvatarFallback></AvatarFallback>
+              </Avatar>
+            </FormRow>
+            <FormRow label="Username">
+              <Input defaultValue={club.username} />
+            </FormRow>
+            <FormRow label="Club Name">
+              <Input defaultValue={club.name} placeholder="Club name" />
+            </FormRow>
+            <FormRow label="Country">
+              <Combobox
+                defaultValue={club.country}
+                data={selectors.countries}
+              />
+            </FormRow>
+            <FormRow label="State">
+              <Combobox defaultValue={club.state} data={selectors.states} />
+            </FormRow>
+            <FormRow label="County">
+              <Combobox defaultValue={club.county} data={selectors.counties} />
+            </FormRow>
+            <FormRow label="Website">
+              <Input
+                type="text"
+                defaultValue={club.website}
+                placeholder="www.example.com"
+              />
+            </FormRow>
+          </GroupForm>
+          {/* payments */}
+          <GroupForm label="Payments">
+            <FormRow label="Affiliate Commission">
+              <Input
+                defaultValue={club.affiliate_fee}
+                type="number"
+                placeholder="%"
+              />
+            </FormRow>
+            <FormRow label="TeamLink Fee">
+              <Input defaultValue={club.fee} type="number" placeholder="$" />
+            </FormRow>
+          </GroupForm>
+          {/* socials */}
+          <GroupForm label="Socials">
+            <FormRow label="Instagram">
+              <Input
+                defaultValue={club.instagram}
+                placeholder="www.instagram.com/username"
+              />
+            </FormRow>
+            <FormRow label="Snapchat">
+              <Input
+                defaultValue={club.snapchat}
+                placeholder="www.snapchat.com/username"
+              />
+            </FormRow>
+            <FormRow label="X / Twitter">
+              <Input
+                defaultValue={club.twitter}
+                placeholder="www.twitter.com/username"
+              />
+            </FormRow>
+            <FormRow label="Tiktok">
+              <Input
+                defaultValue={club.tiktok}
+                placeholder="www.tiktok.com/username"
+              />
+            </FormRow>
+            <FormRow className="col-span-2" label="Other Socials">
+              <RowManipulator data={x}>
+                <Input key="label" placeholder="Label" />
+                <Input key="url" placeholder="url" />
+              </RowManipulator>
+            </FormRow>
+          </GroupForm>
+          {/* sponsors */}
+          <GroupForm label="Sponsors">
+            <FormRow className="col-span-2">
+              {/* <RowManipulator
+                add={() => null}
+                remove={() => null}
+                className="flex flex-col gap-2"
+              >
+                <Input placeholder="Label" />
+                <Input placeholder="url" />
+              </RowManipulator>
+              <Button variant="outline">Add Sponsor</Button> */}
+            </FormRow>
+          </GroupForm>
+          {/* contacts */}
+          <GroupForm label="Contacts">
+            <FormRow label="Email">
+              <Input
+                defaultValue={club.email}
+                type="email"
+                placeholder="example@gmail.com"
+              />
+            </FormRow>
+            <FormRow label="Phone">
+              <Input
+                defaultValue={club.phone}
+                type="number"
+                placeholder="+351"
+              />
+            </FormRow>
+          </GroupForm>
+          <GroupForm>
+            <div className="flex justify-end items-center w-full col-span-2 gap-4">
+              <Button variant="destructive">Delete</Button>
+              <Button>Save Changes</Button>
+            </div>
+          </GroupForm>
         </div>
       )}
 
+      {/* teams */}
       {activals.section === "Teams" && (
         <div className="bg-white p-8 mt-4">
           <span className="text-lg">Teams</span>

@@ -79,7 +79,7 @@ export default function Home(): JSX.Element {
       <Heading1>Dashboard</Heading1>
       <div className="flex gap-4 w-full">
         {cards.map((card: CardData, index: number) => (
-          <Card key={index} className="w-full bg-primary">
+          <Card key={index} className="w-full bg-primary text-white">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 {card.label}
