@@ -30,11 +30,15 @@ const Page = () => {
     <>
       <Heading1>Clubs</Heading1>
       <DataTable
+        data={clubs}
+        hide={{ columns: true }}
         columns={columns({
           actions: [{ label: "View", click: actions.view }],
         })}
-        data={clubs}
-        hide={{ columns: true }}
+        add={{
+          label: "Create Club",
+          click: () => router.push("clubs/create"),
+        }}
       />
     </>
   );

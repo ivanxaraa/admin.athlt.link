@@ -18,7 +18,6 @@ import { useRouter } from "next/navigation";
 import { Combobox } from "@/components/ui/combobox";
 import selectors from "@/utils/selectors";
 import RowManipulator from "@/components/ui/row-manipulator";
-import { toast } from "sonner";
 
 function Page({ params }: { params: { username: string } }) {
   const { username } = params;
@@ -153,35 +152,9 @@ function Page({ params }: { params: { username: string } }) {
     }));
   };
 
-  useEffect(() => {
-    const fetch = async () => {
-      const clubInfo = await clubsControl.get.byUsername(username);
-      if (!clubInfo) {
-        toast.error("Club not found");
-        router.back();
-        return;
-      }
-      setClub(clubInfo);
-      const teamsInfo = await clubsControl.get.teams(clubInfo.id);
-      setTeams(teamsInfo);
-    };
-    fetch();
-  }, []);
-
   return (
     <>
-      <Heading1
-        back="/clubs"
-        buttons={[
-          { label: "Copy Admin Link", click: () => copy(club.associate_code) },
-          {
-            label: "Club Dashboard",
-            click: () => router.push(`https://athlt.link/d/${club.username}`),
-          },
-        ]}
-      >
-        {club.name}
-      </Heading1>
+      <Heading1 back="/clubs">Create Club</Heading1>
 
       {/* tabs */}
       <div className="flex items-center gap-4  mt-4">
@@ -201,7 +174,7 @@ function Page({ params }: { params: { username: string } }) {
       </div>
 
       {/* information */}
-      {activals.section === "Information" && club.id && (
+      {activals.section === "Information" && (
         <div className="mt-4 rounded-lg flex flex-col gap-16">
           {Object.entries(fields).map(([section, fieldsArray]: any, index) => (
             <GroupForm key={index} label={section}>
@@ -247,21 +220,12 @@ function Page({ params }: { params: { username: string } }) {
           <GroupForm>
             <div className="flex justify-end items-center w-full col-span-2 gap-4">
               <Button
-                variant="destructive"
                 onClick={() => {
-                  clubsControl.delete(club);
-                  router.back();
-                }}
-              >
-                Delete
-              </Button>
-              <Button
-                onClick={() => {
-                  clubsControl.update(club);
+                  clubsControl.create(club);
                   router.push(`${club.username}`);
                 }}
               >
-                Save Changes
+                Create Club
               </Button>
             </div>
           </GroupForm>

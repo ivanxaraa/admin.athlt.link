@@ -20,13 +20,14 @@ import {
 } from "@/components/ui/popover";
 import selectors from "@/utils/selectors";
 
-export function Combobox({ data, defaultValue }: any) {
+export function Combobox({ data, defaultValue, id, onChange }: any) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(defaultValue);
 
   const changeValue = (selectedValue: any) => {
     setValue(selectedValue === value ? "" : selectedValue);
     setOpen(false);
+    onChange(id, selectedValue);
   };
 
   return (

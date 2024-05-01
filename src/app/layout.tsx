@@ -24,7 +24,7 @@ export default function RootLayout({
       <body
         className={`${montserrat.className} flex min-h-screen flex-auto flex-shrink-0 flex-col text-black bg-background antialiased`}
       >
-        <Toaster richColors />
+        <Toaster richColors duration={2000} />
         <DashboardNavbar />
         <div className="ml-56">
           <div className=" p-8">{children}</div>
