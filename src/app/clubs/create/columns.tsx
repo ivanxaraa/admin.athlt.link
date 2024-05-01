@@ -12,35 +12,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 
-interface actionsProps {
-  key?: string;
-  label: string;
-  click: Function;
-}
-
-export const columns = ({ actions }: { actions: actionsProps[] }) => [
-  {
-    id: "select",
-    header: ({ table }: any) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value: any) =>
-          table.toggleAllPageRowsSelected(!!value)
-        }
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }: any) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value: any) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-  },
+export const columns = (caller?: { handleActivals: Function }) => [
   {
     accessorKey: "qrcode",
     header: "",
@@ -63,8 +35,12 @@ export const columns = ({ actions }: { actions: actionsProps[] }) => [
     header: "Name",
   },
   {
-    accessorKey: "club.username",
-    header: "Club",
+    accessorKey: "sport",
+    header: "Sport",
+  },
+  {
+    accessorKey: "gender",
+    header: "Gender",
   },
   {
     id: "actions",
@@ -81,19 +57,12 @@ export const columns = ({ actions }: { actions: actionsProps[] }) => [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              {actions.map((action, index) => (
-                <DropdownMenuItem
-                  key={index}
-                  onClick={() =>
-                    action.key
-                      ? action.click(action.key, original)
-                      : action.click(original)
-                  }
-                  className="cursor-pointer"
-                >
-                  {action.label}
-                </DropdownMenuItem>
-              ))}
+              <DropdownMenuItem className="cursor-pointer">
+                View
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                Delete
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

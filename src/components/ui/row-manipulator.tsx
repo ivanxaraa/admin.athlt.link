@@ -24,23 +24,25 @@ export default function RowManipulator({
   children,
   onChange,
 }: ManipulatorProps) {
+
   const [inputs, setInputs] = useState<any>(data);
 
   const handleChange = (index: number, key: string, value: string) => {
     const newData = [...inputs];
     newData[index][key] = value;
     setInputs(newData);
-    if (onChange) onChange(id, inputs);
+    if (onChange) onChange(id, newData);
   };
-
+  
   const addItem = () => {
     setInputs([...inputs, {}]);
   };
-
+  
   const removeItem = (index: number) => {
     const newData = [...inputs];
     newData.splice(index, 1);
     setInputs(newData);
+    if (onChange) onChange(id, newData);
   };
 
   const renderRowManipulator = (item: any, index: number) => {

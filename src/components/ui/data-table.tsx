@@ -38,7 +38,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   add?: {
-    key: string;
+    key?: string;
     label: string;
     click: Function;
   };
@@ -88,7 +88,7 @@ export function DataTable<TData, TValue>({
       {/* handlers */}
       {!hide?.columns || !hide?.filter && (
       <div className="flex items-center justify-between gap-4 pb-4">
-        {hide?.filter && (
+        {!hide?.filter && (
         <div className="flex w-full items-center gap-4">
           <Input
             placeholder="Filter by username..."
