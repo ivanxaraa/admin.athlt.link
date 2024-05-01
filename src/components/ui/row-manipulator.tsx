@@ -8,17 +8,21 @@ type ChildProps = {
 };
 
 type ManipulatorProps = {
+  id: string;
   label?: string;
   className?: string;
   data?: any[];
   children: React.ReactElement<ChildProps>[]; // Children must have a 'key' property
+  onChange?: Function;
 };
 
-export default function Manipulator({
+export default function RowManipulator({
   label = "Item",
+  id,
   className = "",
   data = [],
   children,
+  onChange,
 }: ManipulatorProps) {
   const [inputs, setInputs] = useState<any>(data);
 
@@ -26,6 +30,7 @@ export default function Manipulator({
     const newData = [...inputs];
     newData[index][key] = value;
     setInputs(newData);
+    if (onChange) onChange(id, inputs);
   };
 
   const addItem = () => {

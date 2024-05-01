@@ -46,8 +46,11 @@ function Page({ params }: { params: { username: string } }) {
     fetch();
   }, []);
 
-  const x = [{ label: "teste", url: "teste url" }];
+  const inputChange = (key: string, value: any) => {
+    console.log(key, value);
+  };
 
+  
   return (
     <>
       <Heading1
@@ -157,24 +160,14 @@ function Page({ params }: { params: { username: string } }) {
               />
             </FormRow>
             <FormRow className="col-span-2" label="Other Socials">
-              <RowManipulator data={club.socials}>
+              <RowManipulator
+                id="socials"
+                data={club.socials}
+                onChange={inputChange}
+              >
                 <Input key="label" placeholder="Label" />
                 <Input key="url" placeholder="url" />
               </RowManipulator>
-            </FormRow>
-          </GroupForm>
-          {/* sponsors */}
-          <GroupForm label="Sponsors">
-            <FormRow className="col-span-2">
-              {/* <RowManipulator
-                add={() => null}
-                remove={() => null}
-                className="flex flex-col gap-2"
-              >
-                <Input placeholder="Label" />
-                <Input placeholder="url" />
-              </RowManipulator>
-              <Button variant="outline">Add Sponsor</Button> */}
             </FormRow>
           </GroupForm>
           {/* contacts */}
@@ -194,6 +187,7 @@ function Page({ params }: { params: { username: string } }) {
               />
             </FormRow>
           </GroupForm>
+          {/* buttons */}
           <GroupForm>
             <div className="flex justify-end items-center w-full col-span-2 gap-4">
               <Button variant="destructive">Delete</Button>
