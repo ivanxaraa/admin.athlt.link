@@ -5,12 +5,17 @@ const TABLE = "user_profiles";
 
 export const usersControl = {
   get: async () => {
-    const { data, error } = await supabase.from(TABLE).select();
+    const { data, error } = await supabase
+      .from(TABLE)
+      .select()
+      .order("first_name", { ascending: true });
     return usersControl.format(data);
   },
 
   getPaid: async () => {
-    const { data, error } = await supabase.from("subscriptions").select("*, user_profiles(*)");
+    const { data, error } = await supabase
+      .from("subscriptions")
+      .select("*, user_profiles(*)");
     return athletesControl.format(data);
   },
 

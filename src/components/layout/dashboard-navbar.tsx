@@ -90,7 +90,7 @@ const DashboardNavbar = () => {
                   className={`flex w-full items-center gap-2 rounded-md p-3 text-left text-xs font-medium ${
                     (pathname === "/" && link.href === "/") ||
                     (pathname.startsWith(link.href) && link.href !== "/")
-                      ? "bg-primary "
+                      ? "bg-primary text-white"
                       : "hover:bg-primary/20"
                   }`}
                 >

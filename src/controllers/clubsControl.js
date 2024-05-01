@@ -5,7 +5,10 @@ const TABLE = "clubs";
 export const clubsControl = {
   get: {
     all: async () => {
-      const { data, error } = await supabase.from(TABLE).select();
+      const { data, error } = await supabase
+        .from(TABLE)
+        .select()
+        .order("name", { ascending: true });
       return data || [];
     },
 
@@ -20,11 +23,11 @@ export const clubsControl = {
 
     teams: async (club_id) => {
       const { data, error } = await supabase
-      .from("teams")
-      .select()
-      .eq("club", club_id)
+        .from("teams")
+        .select()
+        .eq("club", club_id);
 
-    return data;
+      return data;
     },
 
     cards: async (club_id) => {

@@ -16,7 +16,7 @@ const Heading1 = ({ children, back, buttons }: Props) => {
   return (
     <div className="flex h-10 items-center gap-2 font-light pb-4 w-full">
       {back && (
-        <Link href={back} className="hover:bg-primary rounded-md p-0.5">
+        <Link href={back} className="hover:bg-primary hover:text-white rounded-md p-0.5">
           <ChevronLeft size={16} strokeWidth={1} />
         </Link>
       )}
