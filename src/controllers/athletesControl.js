@@ -18,6 +18,19 @@ export const athletesControl = {
         full_name: `${athlete.user_profiles?.first_name} ${athlete.user_profiles?.last_name}`,
       };
     });
+
+    athletes.sort((a, b) => {
+      const nameA = a.full_name.toUpperCase(); // Convert names to uppercase
+      const nameB = b.full_name.toUpperCase();
+      if (nameA < nameB) {
+        return -1; // If nameA comes before nameB, return -1
+      }
+      if (nameA > nameB) {
+        return 1; // If nameA comes after nameB, return 1
+      }
+      return 0; // If names are equal
+    });
+
     return athletes;
   },
 };
