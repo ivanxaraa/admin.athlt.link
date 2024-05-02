@@ -6,13 +6,22 @@ export async function middleware(request: NextRequest) {
   // if(request.nextUrl.pathname === "/clubs")
   // return NextResponse.redirect(new URL("/", request.url));
   const cookieStore = cookies();
-  const accessToken = cookieStore.get("my-access-token");
-  const refreshToken = cookieStore.get("my-refresh-token");
-  console.log(accessToken);
-  console.log(refreshToken);
+  const accessToken = cookieStore.get("my-access-token")?.value;
+  const refreshToken = cookieStore.get("my-refresh-token")?.value;
+
+  if (accessToken && refreshToken) {
+    await supabase.auth.setSession({
+      access_token: accessToken,
+      refresh_token: refreshToken,
+    });
+  }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   return NextResponse.json(
-    { message: "Auth required", accessToken, refreshToken },
+    { message: "Auth dev", id: user?.id },
     { status: 401 }
   );
 }
