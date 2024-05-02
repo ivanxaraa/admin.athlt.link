@@ -30,4 +30,21 @@ export const generic = {
       }
     },
   },
+  misc: {
+    isFile: (variable) => {
+      return variable instanceof File;
+    },
+    random: (min = 0, max = 100) => {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+    code: (size, text) => {
+      const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let code = "";
+      for (let i = 0; i < size; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        code += charset.charAt(randomIndex);
+      }
+      return text ? text.toUpperCase() + code : code;
+    },
+  },
 };

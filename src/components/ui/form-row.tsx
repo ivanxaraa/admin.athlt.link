@@ -3,7 +3,7 @@ import React from "react";
 const FormRow = ({ children, label, className }: any) => {
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
-      <span className={`text-xs text-gray-600`}>{label}</span>
+      {label && <span className={`text-xs text-gray-600`}>{label}</span>}
       {children}
     </div>
   );

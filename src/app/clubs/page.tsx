@@ -39,6 +39,7 @@ const Page = () => {
           label: "Create Club",
           click: () => router.push("clubs/create"),
         }}
+        rowClick={(row: any) => router.push(`clubs/${row.username}`)}
       />
     </>
   );

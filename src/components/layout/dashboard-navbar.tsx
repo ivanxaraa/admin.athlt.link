@@ -63,11 +63,11 @@ const DashboardNavbar = () => {
           icon: <Building2 {...icon_size.navbar} />,
           href: "/clubs",
         },
-        {
-          name: "Teams",
-          icon: <UsersRound {...icon_size.navbar} />,
-          href: "/teams",
-        },
+        // {
+        //   name: "Teams",
+        //   icon: <UsersRound {...icon_size.navbar} />,
+        //   href: "/teams",
+        // },
       ],
     },
   ];

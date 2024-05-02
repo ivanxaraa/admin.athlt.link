@@ -12,7 +12,13 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export const columns = (caller?: { handleActivals: Function }) => [
+interface actionsProps {
+  key?: string;
+  label: string;
+  click: Function;
+}
+
+export const columns = ({ actions }: { actions: actionsProps[] }) => [
   {
     accessorKey: "qrcode",
     header: "",
@@ -57,12 +63,19 @@ export const columns = (caller?: { handleActivals: Function }) => [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem className="cursor-pointer">
-                View
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                Delete
-              </DropdownMenuItem>
+              {actions.map((action, index) => (
+                <DropdownMenuItem
+                  key={index}
+                  onClick={() =>
+                    action.key
+                      ? action.click(action.key, original)
+                      : action.click(original)
+                  }
+                  className="cursor-pointer"
+                >
+                  {action.label}
+                </DropdownMenuItem>
+              ))}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

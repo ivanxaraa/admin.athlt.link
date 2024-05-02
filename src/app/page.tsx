@@ -50,24 +50,6 @@ export default function Home(): JSX.Element {
     ];
 
     setCards(cardData);
-
-    const cookies = Object.fromEntries(
-      document.cookie.split("; ").map((cookie) => cookie.split("="))
-    );
-    const accessToken = cookies["my-access-token"];
-    const refreshToken = cookies["my-refresh-token"];
-
-    if (accessToken && refreshToken) {
-      await supabase.auth.setSession({
-        access_token: accessToken,
-        refresh_token: refreshToken,
-      });
-    }
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    console.log(user);
   };
 
   useEffect(() => {

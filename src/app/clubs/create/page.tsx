@@ -18,9 +18,9 @@ import { useRouter } from "next/navigation";
 import { Combobox } from "@/components/ui/combobox";
 import selectors from "@/utils/selectors";
 import RowManipulator from "@/components/ui/row-manipulator";
+import { generic } from "@/utils/generic";
 
 function Page({ params }: { params: { username: string } }) {
-  const { username } = params;
   const router = useRouter();
   const [club, setClub] = useState<any>({});
   const [teams, setTeams] = useState<any>([]);
@@ -36,8 +36,14 @@ function Page({ params }: { params: { username: string } }) {
   const [fields, setFields] = useState<any>({
     Details: [
       {
+        id: "logo",
+        field_type: "image",
+        className: "col-span-2",
+      },
+      {
         label: "Username",
         id: "username",
+        placeholder: "Username",
       },
       {
         id: "name",
@@ -204,6 +210,33 @@ function Page({ params }: { params: { username: string } }) {
                       defaultValue={club[field.id]}
                       data={field.data}
                     />
+                  ) : field.field_type === "image" ? (
+                    <>
+                      <Input
+                        id={field.id}
+                        className="hidden"
+                        type="file"
+                        onChange={(e) =>
+                          e.target.files &&
+                          inputChange(field.id, e.target.files[0])
+                        }
+                      />
+                      <Avatar
+                        onClick={() =>
+                          document.getElementById(field.id)?.click()
+                        }
+                        className="size-24 cursor-pointer"
+                      >
+                        <AvatarImage
+                          src={
+                            generic.misc.isFile(club[field.id])
+                              ? URL.createObjectURL(club[field.id])
+                              : club[field.id]
+                          }
+                        />
+                        <AvatarFallback></AvatarFallback>
+                      </Avatar>
+                    </>
                   ) : (
                     <Input
                       onChange={(e) => inputChange(field.id, e.target.value)}
@@ -220,10 +253,11 @@ function Page({ params }: { params: { username: string } }) {
           <GroupForm>
             <div className="flex justify-end items-center w-full col-span-2 gap-4">
               <Button
-                onClick={() => {
-                  clubsControl.create(club);
-                  router.push(`${club.username}`);
-                }}
+                onClick={() =>
+                  clubsControl.create(club, () =>
+                    router.push(`${club.username}`)
+                  )
+                }
               >
                 Create Club
               </Button>

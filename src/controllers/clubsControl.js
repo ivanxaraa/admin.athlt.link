@@ -1,8 +1,10 @@
 import { supabase } from "@/lib/supabase";
+import { app } from "@/utils/constants";
+import { generic } from "@/utils/generic";
 import { toast } from "sonner";
 
-
 const TABLE = "clubs";
+const BUCKET = "avatars_clubs";
 
 export const clubsControl = {
   get: {
@@ -62,16 +64,39 @@ export const clubsControl = {
       .eq("id", club.id);
     if (error) return toast.error("Something went wrong");
     toast.success(`Club updated successfully!`);
+    if (generic.misc.isFile(club.logo))
+      clubsControl.misc.uploadImage(club.logo, club.id, BUCKET);
   },
-  create: async (club) => {
+  create: async (club, redirect) => {
     if (clubsControl.validate(club)) return;
-    const { data, error } = await supabase.from(TABLE).insert(club);
+    const { data, error } = await supabase.from(TABLE).insert(club).select();
     if (error) return toast.error("Something went wrong");
+    const club_id = data[0].id;
     toast.success(`Club created successfully!`);
+    if (generic.misc.isFile(club.logo))
+      clubsControl.misc.uploadImage(club.logo, club_id, BUCKET);
+    redirect();
   },
   delete: async (club) => {
     const { error } = await supabase.from(TABLE).delete().eq("id", club.id);
     if (error) return toast.error("Something went wrong!");
     toast.success("Club deleted successfuly!");
+  },
+  misc: {
+    uploadImage: async (file, id, bucket) => {
+      const { error: errorLogo } = await supabase.storage
+        .from(bucket)
+        .upload(id, file, {
+          cacheControl: "no-cache",
+          upsert: true,
+        });
+      if (errorLogo) toast.error("Error uploading image!");
+      await supabase
+        .from(TABLE)
+        .update({
+          logo: `${app.storage_url}/${BUCKET}/${id}`,
+        })
+        .eq("id", id);
+    },
   },
 };
