@@ -20,14 +20,25 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  return NextResponse.json(
-    { message: "Auth dev", id: user?.id },
-    { status: 401 }
-  );
+  const temporary_admins: string[] = [
+    // riera
+    "48588251-32e2-4ea7-9c48-c2d2bfa4f295",
+    // ivanjob
+    "f3617cb6-a4ca-4fe5-bb9c-b9e466509de4",
+    // maincc
+    "f6139f0a-3f47-4ab0-a034-270a784bdb31",
+  ];
+
+  if (!user || !temporary_admins.includes(user.id)) {
+    return NextResponse.json(
+      { message: "Unauthorized access!" },
+      { status: 401 }
+    );
+  }
 }
 
 export const config = {
-  matcher: "/clubs",
+  matcher: "/",
 };
 
 // // set session
