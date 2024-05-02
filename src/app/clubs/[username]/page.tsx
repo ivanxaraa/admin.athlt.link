@@ -5,7 +5,7 @@ import FormRow from "@/components/ui/form-row";
 import Heading1 from "@/components/ui/heading-1";
 import { Input } from "@/components/ui/input";
 import { clubsControl } from "@/controllers/clubsControl";
-import { env, icon_size } from "@/utils/constants";
+import { app, env, icon_size } from "@/utils/constants";
 import { UsersRound } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import React, { useEffect, useState } from "react";
@@ -19,6 +19,7 @@ import { Combobox } from "@/components/ui/combobox";
 import selectors from "@/utils/selectors";
 import RowManipulator from "@/components/ui/row-manipulator";
 import { toast } from "sonner";
+import { generic } from "@/utils/generic";
 
 function Page({ params }: { params: { username: string } }) {
   const { username } = params;
@@ -36,6 +37,11 @@ function Page({ params }: { params: { username: string } }) {
 
   const [fields, setFields] = useState<any>({
     Details: [
+      {
+        id: "logo",
+        field_type: "image",
+        className: "col-span-2",
+      },
       {
         label: "Username",
         id: "username",
@@ -153,6 +159,12 @@ function Page({ params }: { params: { username: string } }) {
     }));
   };
 
+  const actions = {
+    view: (team: any) => {
+      router.push(`${username}/teams/${team.username}`);
+    },
+  };
+
   useEffect(() => {
     const fetch = async () => {
       const clubInfo = await clubsControl.get.byUsername(username);
@@ -176,7 +188,7 @@ function Page({ params }: { params: { username: string } }) {
           { label: "Copy Admin Link", click: () => copy(club.associate_code) },
           {
             label: "Club Dashboard",
-            click: () => router.push(`https://athlt.link/d/${club.username}`),
+            click: () => router.push(`${app.website_url}/d/${club.username}`),
           },
         ]}
       >
@@ -231,6 +243,33 @@ function Page({ params }: { params: { username: string } }) {
                       defaultValue={club[field.id]}
                       data={field.data}
                     />
+                  ) : field.field_type === "image" ? (
+                    <>
+                      <Input
+                        id={field.id}
+                        className="hidden"
+                        type="file"
+                        onChange={(e) =>
+                          e.target.files &&
+                          inputChange(field.id, e.target.files[0])
+                        }
+                      />
+                      <Avatar
+                        onClick={() =>
+                          document.getElementById(field.id)?.click()
+                        }
+                        className="size-24 cursor-pointer"
+                      >
+                        <AvatarImage
+                          src={
+                            generic.misc.isFile(club[field.id])
+                              ? URL.createObjectURL(club[field.id])
+                              : club[field.id]
+                          }
+                        />
+                        <AvatarFallback></AvatarFallback>
+                      </Avatar>
+                    </>
                   ) : (
                     <Input
                       onChange={(e) => inputChange(field.id, e.target.value)}
@@ -274,9 +313,18 @@ function Page({ params }: { params: { username: string } }) {
           <span className="text-lg">Teams</span>
           <div className="mt-8">
             <DataTable
-              columns={columns()}
+              columns={columns({
+                actions: [{ label: "View", click: actions.view }],
+              })}
               data={teams}
-              hide={{ columns: true, filter: true }}
+              hide={{ columns: true }}
+              add={{
+                label: "Create Team",
+                click: () => router.push(`${username}/teams/create`),
+              }}
+              rowClick={(row: any) =>
+                router.push(`${username}/teams/${row.username}`)
+              }
             />
           </div>
         </div>

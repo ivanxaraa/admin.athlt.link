@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/components/ui/combobox";
+import FormBuilder from "@/components/ui/form-builder";
 import FormRow from "@/components/ui/form-row";
 import GroupForm from "@/components/ui/group-form";
 import Heading1 from "@/components/ui/heading-1";
@@ -14,8 +15,12 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-function Page({ params }: { params: { username: string } }) {
-  const { username } = params;
+function Page({
+  params,
+}: {
+  params: { username: string; team_username: string };
+}) {
+  const { username, team_username } = params;
   const router = useRouter();
   const [team, setTeam] = useState<any>({});
 
@@ -45,15 +50,28 @@ www.athlt.link`;
   };
 
   const [fields, setFields] = useState<any>({
+    Images: [
+      {
+        id: "qrcode",
+        label: "QR Code",
+        field_type: "image",
+      },
+      {
+        id: "scan",
+        label: "Scan",
+        field_type: "image",
+      },
+    ],
     Details: [
       {
         label: "Username",
         id: "username",
+        placeholder: "Username",
       },
       {
         id: "name",
-        label: "Club Name",
-        placeholder: "Club name",
+        label: "Team Name",
+        placeholder: "Team name",
       },
       {
         id: "group_age",
@@ -75,7 +93,7 @@ www.athlt.link`;
 
   useEffect(() => {
     const fetch = async () => {
-      const teamInfo = await teamsControl.getByUsername(username);
+      const teamInfo = await teamsControl.getByUsername(team_username);
       if (!teamInfo) {
         toast.error("Club not found");
         router.back();
@@ -89,7 +107,7 @@ www.athlt.link`;
   return (
     <>
       <Heading1
-        back="/teams"
+        back={`/clubs/${username}`}
         buttons={[
           { label: "Invite", click: () => invite(false) },
           {
@@ -102,46 +120,7 @@ www.athlt.link`;
       </Heading1>
 
       <div className="mt-4 rounded-lg flex flex-col gap-16">
-        {Object.entries(fields).map(([section, fieldsArray]: any, index) => (
-          <GroupForm key={index} label={section}>
-            {fieldsArray.map((field: any, idx: number) => (
-              <FormRow
-                key={idx}
-                label={field.label}
-                className={field.className}
-              >
-                {field.field_type === "row-manipulator" ? (
-                  <RowManipulator
-                    id={field.id}
-                    data={team[field.id]}
-                    onChange={field.onChange}
-                  >
-                    {field.fields.map((innerField: any, innerIdx: any) => (
-                      <Input
-                        key={innerField.key}
-                        placeholder={innerField.placeholder}
-                      />
-                    ))}
-                  </RowManipulator>
-                ) : field.field_type === "combobox" ? (
-                  <Combobox
-                    id={field.id}
-                    onChange={inputChange}
-                    defaultValue={team[field.id]}
-                    data={field.data}
-                  />
-                ) : (
-                  <Input
-                    onChange={(e) => inputChange(field.id, e.target.value)}
-                    type={field.type}
-                    value={team[field.id]}
-                    placeholder={field.placeholder}
-                  />
-                )}
-              </FormRow>
-            ))}
-          </GroupForm>
-        ))}
+        <FormBuilder fields={fields} data={team} inputChange={inputChange} />
         {/* buttons */}
         <GroupForm>
           <div className="flex justify-end items-center w-full col-span-2 gap-4">
