@@ -39,6 +39,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   buttons?: {
     key?: string;
+    icon?: any;
     label: string;
     click: Function;
   }[];
@@ -145,9 +146,16 @@ export function DataTable<TData, TValue>({
               )}
 
               {buttons &&
-                buttons.map((button) => (
-                  <Button onClick={() => button.click(button.key, {})}>
-                    <Plus color="white" size={16} strokeWidth={1} />
+                buttons.map((button, index) => (
+                  <Button
+                    key={index}
+                    onClick={() => button.click(button.key, {})}
+                  >
+                    {button.icon ? (
+                      button.icon
+                    ) : (
+                      <Plus color="white" size={16} strokeWidth={1} />
+                    )}
                     <span className="ml-2 text-xs">{button.label}</span>
                   </Button>
                 ))}
