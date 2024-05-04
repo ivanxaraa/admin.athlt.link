@@ -48,10 +48,10 @@ export const clubsControl = {
       // console.log(response);
     },
   },
-  validate: (club) => {
+  validate: (club, alerts = true) => {
     const mandatory = ["username", "name"];
     const missing_field = mandatory.find((key) => !club[key]);
-    if (missing_field) {
+    if (missing_field && alerts) {
       toast.warning(`Field '${missing_field}' should not be empty`);
     }
     return !!missing_field;
@@ -70,12 +70,16 @@ export const clubsControl = {
   create: async (club, redirect) => {
     if (clubsControl.validate(club)) return;
     const { data, error } = await supabase.from(TABLE).insert(club).select();
-    if (error) return toast.error("Something went wrong");
+    if (error) {
+      toast.error("Something went wrong");
+      return;
+    }
     const club_id = data[0].id;
     toast.success(`Club created successfully!`);
     if (generic.misc.isFile(club.logo))
       clubsControl.misc.uploadImage(club.logo, club_id, BUCKET);
-    redirect();
+    if (redirect) redirect();
+    return club_id;
   },
   delete: async (club) => {
     const { error } = await supabase.from(TABLE).delete().eq("id", club.id);
