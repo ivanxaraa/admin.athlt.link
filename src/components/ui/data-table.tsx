@@ -37,11 +37,11 @@ import { ChevronDown, Columns, Columns3, Edit2, Plus } from "lucide-react";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  add?: {
+  buttons?: {
     key?: string;
     label: string;
     click: Function;
-  };
+  }[];
   actions?: {
     custom?: {
       key?: string;
@@ -59,7 +59,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  add,
+  buttons,
   actions,
   hide,
   rowClick,
@@ -143,13 +143,14 @@ export function DataTable<TData, TValue>({
                   </DropdownMenuContent>
                 </DropdownMenu>
               )}
-              {/* add product */}
-              {add && (
-                <Button onClick={() => add.click(add.key, {})}>
-                  <Plus color="white" size={16} strokeWidth={1} />
-                  <span className="ml-2 text-xs">{add.label}</span>
-                </Button>
-              )}
+
+              {buttons &&
+                buttons.map((button) => (
+                  <Button onClick={() => button.click(button.key, {})}>
+                    <Plus color="white" size={16} strokeWidth={1} />
+                    <span className="ml-2 text-xs">{button.label}</span>
+                  </Button>
+                ))}
               {/* columns */}
               {!hide?.columns && (
                 <DropdownMenu>

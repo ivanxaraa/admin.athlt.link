@@ -318,10 +318,12 @@ function Page({ params }: { params: { username: string } }) {
               })}
               data={teams}
               hide={{ columns: true }}
-              add={{
-                label: "Create Team",
-                click: () => router.push(`${username}/teams/create`),
-              }}
+              buttons={[
+                {
+                  label: "Create Team",
+                  click: () => router.push(`${username}/teams/create`),
+                },
+              ]}
               rowClick={(row: any) =>
                 router.push(`${username}/teams/${row.username}`)
               }

@@ -6,6 +6,7 @@ import { columns } from "./columns";
 import Heading1 from "@/components/ui/heading-1";
 import { clubsControl } from "@/controllers/clubsControl";
 import { useRouter } from "next/navigation";
+import { copy } from "@/utils/copy";
 
 const Page = () => {
   const router = useRouter();
@@ -35,10 +36,16 @@ const Page = () => {
         columns={columns({
           actions: [{ label: "View", click: actions.view }],
         })}
-        add={{
-          label: "Create Club",
-          click: () => router.push("clubs/create"),
-        }}
+        buttons={[
+          {
+            label: "Create Club",
+            click: () => router.push("clubs/create"),
+          },
+          {
+            label: "Copy Form Link",
+            click: () => copy("https://admin.athlt.link/forms/create-club"),
+          },
+        ]}
         rowClick={(row: any) => router.push(`clubs/${row.username}`)}
       />
     </>
