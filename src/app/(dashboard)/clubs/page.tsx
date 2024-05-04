@@ -7,6 +7,7 @@ import Heading1 from "@/components/ui/heading-1";
 import { clubsControl } from "@/controllers/clubsControl";
 import { useRouter } from "next/navigation";
 import { copy } from "@/utils/copy";
+import { ClipboardPlus } from "lucide-react";
 
 const Page = () => {
   const router = useRouter();
@@ -38,12 +39,13 @@ const Page = () => {
         })}
         buttons={[
           {
-            label: "Create Club",
-            click: () => router.push("clubs/create"),
-          },
-          {
             label: "Copy Form Link",
             click: () => copy("https://admin.athlt.link/forms/create-club"),
+            icon: <ClipboardPlus size={16} strokeWidth={1} />,
+          },
+          {
+            label: "Create Club",
+            click: () => router.push("clubs/create"),
           },
         ]}
         rowClick={(row: any) => router.push(`clubs/${row.username}`)}
