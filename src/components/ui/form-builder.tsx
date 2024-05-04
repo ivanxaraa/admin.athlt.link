@@ -26,8 +26,9 @@ const FormBuilder = ({
               {field.field_type === "row-manipulator" ? (
                 <RowManipulator
                   id={field.id}
+                  label={field.placeholder}
                   data={data[field.id]}
-                  onChange={field.onChange}
+                  onChange={field.onChange || inputChange}
                 >
                   {field.fields.map((innerField: any, innerIdx: any) => (
                     <Input

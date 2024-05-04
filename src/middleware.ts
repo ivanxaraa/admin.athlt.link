@@ -3,9 +3,15 @@ import { supabase } from "./lib/supabase";
 import { cookies } from "next/headers";
 
 export async function middleware(request: NextRequest) {
+  const isLocalhost = request.headers.get("host")?.startsWith("localhost");
+
+  if (isLocalhost) {
+    return;
+  }
+
   const cookieStore = cookies();
-  const accessToken = cookieStore.get("my-access-token")?.value;
-  const refreshToken = cookieStore.get("my-refresh-token")?.value;
+  const { value: accessToken } = cookieStore.get("my-access-token") || {};
+  const { value: refreshToken } = cookieStore.get("my-refresh-token") || {};
 
   if (accessToken && refreshToken) {
     await supabase.auth.setSession({
@@ -14,17 +20,12 @@ export async function middleware(request: NextRequest) {
     });
   }
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { user } = (await supabase.auth.getUser()).data;
 
-  const temporary_admins: string[] = [
-    // riera
-    "48588251-32e2-4ea7-9c48-c2d2bfa4f295",
-    // ivanjob
-    "f3617cb6-a4ca-4fe5-bb9c-b9e466509de4",
-    // maincc
-    "f6139f0a-3f47-4ab0-a034-270a784bdb31",
+  const temporary_admins = [
+    "48588251-32e2-4ea7-9c48-c2d2bfa4f295", // riera
+    "f3617cb6-a4ca-4fe5-bb9c-b9e466509de4", // ivanjob
+    "f6139f0a-3f47-4ab0-a034-270a784bdb31", // maincc
   ];
 
   if (!user || !temporary_admins.includes(user.id)) {
@@ -36,5 +37,14 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: "/:path*",
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico|forms).*)",
+  ],
 };
