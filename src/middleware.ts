@@ -3,12 +3,6 @@ import { supabase } from "./lib/supabase";
 import { cookies } from "next/headers";
 
 export async function middleware(request: NextRequest) {
-  const isLocalhost = request.headers.get("host")?.startsWith("localhost");
-
-  if (isLocalhost) {
-    return;
-  }
-
   const cookieStore = cookies();
   const { value: accessToken } = cookieStore.get("my-access-token") || {};
   const { value: refreshToken } = cookieStore.get("my-refresh-token") || {};
