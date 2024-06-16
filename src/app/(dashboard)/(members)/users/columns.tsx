@@ -12,6 +12,18 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
 export const columns = (caller?: { handleActivals: Function }) => [
   {
     id: "select",
@@ -71,11 +83,11 @@ export const columns = (caller?: { handleActivals: Function }) => [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem
+                onClick={(e) => e.stopPropagation()}
+                className="cursor-pointer"
+              >
                 View
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

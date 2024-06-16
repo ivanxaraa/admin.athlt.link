@@ -220,8 +220,11 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
+                  id="table-row"
                   className={rowClick ? "cursor-pointer" : ""}
-                  onClick={() => rowClick && rowClick(row.original)}
+                  onClick={(e) => {
+                    rowClick && rowClick(row.original);
+                  }}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
