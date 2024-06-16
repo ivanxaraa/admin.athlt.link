@@ -35,7 +35,7 @@ import axios from "axios";
 const Page = () => {
   const router = useRouter();
   const [users, setUsers] = useState<any>([]);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<any>(false);
 
   const columns = () => [
     {
@@ -119,9 +119,7 @@ const Page = () => {
 
   const deleteUser = async () => {
     const user = open;
-    console.log(user);
-    
-    const response = await axios.delete(`api/users/${user.id}`);
+    const response = await axios.delete(`api/users/${user?.id}`);
     console.log(response);
   };
 

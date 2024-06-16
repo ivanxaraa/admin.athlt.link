@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 //   });
 // }
 
-export async function DELETE(request, context) {
+export async function DELETE(request: any, context: any) {
   const { id } = context?.params;
   const response = await supabase.auth.admin.deleteUser(id);
   return NextResponse.json({
