@@ -31,6 +31,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
+import { toast } from "sonner";
 
 const Page = () => {
   const router = useRouter();
@@ -119,8 +120,12 @@ const Page = () => {
 
   const deleteUser = async () => {
     const user = open;
+    console.log(user.id);
     const response = await axios.delete(`api/users/${user?.id}`);
     console.log(response);
+    toast.success("User deleted successfuly");
+    setOpen(false);
+    getUsers();
   };
 
   useEffect(() => {
