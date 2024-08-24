@@ -71,6 +71,10 @@ export const columns = ({ actions }: { actions: actionsProps[] }) => [
     header: "State",
   },
   {
+    accessorKey: "type",
+    header: "Type",
+  },
+  {
     id: "actions",
     header: "",
     cell: ({ row }: any) => {
