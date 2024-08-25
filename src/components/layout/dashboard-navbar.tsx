@@ -22,7 +22,7 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { icon_size } from "@/utils/constants";
 import Image from "next/image";
-import Logo from "@/assets/img/Logo.png";
+import Logo from "@/app/opengraph-image.png";
 
 const DashboardNavbar = () => {
   const pathname = usePathname();
@@ -93,11 +93,11 @@ const DashboardNavbar = () => {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`flex w-full items-center gap-2 rounded-md p-3 text-left text-xs font-medium ${
+                  className={`flex w-full items-center transition-all gap-2 rounded-md p-3 text-left text-xs font-medium ${
                     (pathname === "/" && link.href === "/") ||
                     (pathname.startsWith(link.href) && link.href !== "/")
                       ? "bg-primary text-white"
-                      : "hover:bg-primary/20"
+                      : "hover:bg-primary/10"
                   }`}
                 >
                   <div>{link.icon}</div>

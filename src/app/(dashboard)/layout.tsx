@@ -22,7 +22,7 @@ export default function RootLayout({
     <main>
       <DashboardNavbar />
       <div className="ml-56">
-        <div className=" p-8">{children}</div>
+        <div className="p-8 relative">{children}</div>
       </div>
     </main>
   );

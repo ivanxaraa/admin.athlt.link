@@ -51,6 +51,15 @@ function Page({ params }: { params: { username: string } }) {
         className: "sm:col-span-2",
       },
       {
+        id: "type",
+        label: "Type",
+        data: ["High School", "College", "Club"].map((x) => ({
+          label: x,
+          value: x,
+        })),
+        field_type: "combobox",
+      },
+      {
         label: "Username",
         id: "username",
         placeholder: "Username",

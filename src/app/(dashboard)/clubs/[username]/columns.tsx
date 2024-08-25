@@ -11,6 +11,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
+import { supabase } from "@/lib/supabase";
+import { CLUBS_STATUS, TEAMS_STATUS } from "@/utils/constants";
+import { toast } from "sonner";
+import { Switch } from "@/components/ui/switch";
 
 interface actionsProps {
   key?: string;
@@ -47,6 +51,33 @@ export const columns = ({ actions }: { actions: actionsProps[] }) => [
   {
     accessorKey: "gender",
     header: "Gender",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }: any) => {
+      const { original } = row;
+      return (
+        <Switch
+          onCheckedChange={async (val) => {
+            try {
+              const { error } = await supabase
+                .from("teams")
+                .update({
+                  status: val ? TEAMS_STATUS.ACTIVE : TEAMS_STATUS.DISABLED,
+                })
+                .eq("id", original.id);
+              if (error) throw error;
+              toast.success("Club updated successfuly");
+            } catch (err) {
+              console.log(err);
+              toast.error("Error updating status");
+            }
+          }}
+          defaultChecked={original.status === CLUBS_STATUS.ACTIVE}
+        />
+      );
+    },
   },
   {
     id: "actions",

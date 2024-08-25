@@ -23,7 +23,7 @@ const Heading1 = ({ children, back, buttons }: Props) => {
           <ChevronLeft size={16} strokeWidth={1} />
         </Link>
       )}
-      {children}
+      <span className="font-bold text-xl leading-tight">{children}</span>
       <div className="ml-auto flex gap-4">
         {buttons &&
           buttons.map((button) => (

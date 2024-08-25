@@ -20,3 +20,13 @@ export const icon_size = {
   },
   buttons: {},
 };
+
+export const CLUBS_STATUS = {
+  ACTIVE: "active",
+  DISABLED: "disabled",
+};
+
+export const TEAMS_STATUS = {
+  ACTIVE: "active",
+  DISABLED: "disabled",
+};

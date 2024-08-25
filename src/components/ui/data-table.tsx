@@ -1,5 +1,4 @@
-"use client";
-
+import React from "react";
 import {
   ColumnDef,
   flexRender,
@@ -24,15 +23,12 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React from "react";
-import { ChevronDown, Columns, Columns3, Edit2, Plus } from "lucide-react";
+import { ChevronDown, Columns3, Plus } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -68,10 +64,8 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
-
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
@@ -144,7 +138,6 @@ export function DataTable<TData, TValue>({
                   </DropdownMenuContent>
                 </DropdownMenu>
               )}
-
               {buttons &&
                 buttons.map((button, index) => (
                   <Button
@@ -159,7 +152,6 @@ export function DataTable<TData, TValue>({
                     <span className="ml-2 text-xs">{button.label}</span>
                   </Button>
                 ))}
-              {/* columns */}
               {!hide?.columns && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -172,8 +164,8 @@ export function DataTable<TData, TValue>({
                     {table
                       .getAllColumns()
                       .filter((column) => column.getCanHide())
-                      .map((column) => {
-                        return (
+                      .map(
+                        (column) =>
                           column.columnDef.header && (
                             <DropdownMenuCheckboxItem
                               key={column.id}
@@ -186,8 +178,7 @@ export function DataTable<TData, TValue>({
                               {column.id}
                             </DropdownMenuCheckboxItem>
                           )
-                        );
-                      })}
+                      )}
                   </DropdownMenuContent>
                 </DropdownMenu>
               )}
@@ -200,35 +191,34 @@ export function DataTable<TData, TValue>({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
                   id="table-row"
                   className={rowClick ? "cursor-pointer" : ""}
-                  onClick={(e) => {
-                    rowClick && rowClick(row.original);
+                  onClick={(e: any) => {
+                    if (e.target.id === "table-cell")
+                      rowClick && rowClick(row.original);
                   }}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell id="table-cell" key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

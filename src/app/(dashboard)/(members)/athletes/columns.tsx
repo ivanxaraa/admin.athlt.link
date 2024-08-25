@@ -12,7 +12,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export const columns = (caller?: { handleActivals: Function }) => [
+export const columns = [
   {
     id: "select",
     header: ({ table }: any) => (

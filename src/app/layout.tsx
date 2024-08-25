@@ -1,6 +1,7 @@
-import { fonts, montserrat } from "@/assets/fonts";
+import { montserrat } from "@/assets/fonts";
 import "@/app/globals.css";
 import { Toaster } from "sonner";
+import ReactQueryProvider from "@/providers/react-query";
 
 export const metadata = {
   title: "Next.js",
@@ -13,13 +14,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <Toaster richColors duration={2000} />
-      <body
-        className={`${montserrat.className} flex min-h-screen flex-auto flex-shrink-0 flex-col text-black bg-background antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <ReactQueryProvider>
+      <html lang="en">
+        <Toaster richColors duration={2000} />
+        <body
+          className={`${montserrat.className} flex min-h-screen flex-auto flex-shrink-0 flex-col text-black bg-background antialiased`}
+        >
+          {children}
+        </body>
+      </html>
+    </ReactQueryProvider>
   );
 }
