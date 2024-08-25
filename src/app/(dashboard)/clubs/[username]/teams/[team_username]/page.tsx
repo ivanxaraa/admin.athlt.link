@@ -29,22 +29,67 @@ function Page({
     setTeam((prev: any) => ({ ...prev, [key]: value }));
   };
 
-  const invite = (free = false) => {
-    const code = free ? team.team_code : team.team_code_paid;
-    const text = `Hey, you’ve been invited to join ${team.club.name} ${
-      team.name
-    } on ATHLT.
+  const invite = (type = "normal") => {
+    const code = type === "normal" ? team.team_code : team.team_code_paid;
+    let text;
 
-Use this link to connect to the team ${window.location.origin}/invite/${code}
+    switch (type) {
+      case "normal":
+        text = `Hey, you’ve been invited to join ${team.club.name} ${
+          team.name
+        } on ATHLT.
+  
+  Use this link to download the app and create your free profile: ${
+    window.location.origin
+  }/invite/${code}
+  
+  Access your Dashboard - TeamLink and enter the code: ${code}
+  
+  Connect to your team costs only $${generic.number.toDecimal(
+    team.club.fee
+  )} for the full season.
+  
+  For more information about ATHLT:
+  www.athlt.link`;
+        break;
 
-If you already have an ATHLT account you can enter this code ${code} at your Dashboard.
+      case "free_verification":
+        text = `Hey, you’ve been invited to join ${team.club.name} ${
+          team.name
+        } on ATHLT.
+  
+  Use this link to download the app and create your free profile: ${
+    window.location.origin
+  }/invite/${code}
+  
+  Access your Dashboard - TeamLink and enter the code: ${code}
+  
+  Connect to your team costs only $${generic.number.toDecimal(
+    team.club.fee
+  )} for the full season.
+  As a special offer, you can verify your ID for free.
+  
+  For more information about ATHLT:
+  www.athlt.link`;
+        break;
 
-The ATHLT profile is totally free and link it to the team costs only $${generic.number.toDecimal(
-      team.club.fee
-    )} for the full season.
+      case "free":
+        text = `Hey, you’ve been invited to join ${team.club.name} ${team.name} on ATHLT.
+  
+  Use this link to download the app and create your free profile: ${window.location.origin}/invite/${code}
+  
+  Access your Dashboard - TeamLink and enter the code: ${code}
+  
+  Connect to your team it’s free for the full season.
+  
+  For more information about ATHLT:
+  www.athlt.link`;
+        break;
 
-For more information about ATHLT:
-www.athlt.link`;
+      default:
+        toast.error("Something went wrong!");
+        return;
+    }
 
     copy(text);
   };
@@ -104,15 +149,30 @@ www.athlt.link`;
     fetch();
   }, []);
 
+  // const queryImageInvoice = useQuery({
+  //   queryKey: ['invoice_image', invoiceId],
+  //   queryFn: async () => {
+  //     return await getImage(
+  //       CATALYST_FILESTORE_FOLDERS.invoices,
+  //       queryInvoice.data.proofFilestoreId,
+  //     );
+  //   },
+  //   enabled: !!queryInvoice.isSuccess && !!queryInvoice.data.proofFilestoreId,
+  // });
+
   return (
     <>
       <Heading1
         back={`/clubs/${username}`}
         buttons={[
-          { label: "Invite", click: () => invite(false) },
+          { label: "Invite", click: () => invite() },
           {
             label: "Free Invite",
-            click: () => invite(true),
+            click: () => invite("free"),
+          },
+          {
+            label: "Free Verification",
+            click: () => invite("free_verification"),
           },
         ]}
       >
