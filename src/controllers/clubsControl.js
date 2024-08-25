@@ -49,7 +49,7 @@ export const clubsControl = {
     },
   },
   validate: (club, alerts = true) => {
-    const mandatory = ["username", "name"];
+    const mandatory = ["username", "name", "type"];
     const missing_field = mandatory.find((key) => !club[key]);
     if (missing_field && alerts) {
       toast.warning(`Field '${missing_field}' should not be empty`);
