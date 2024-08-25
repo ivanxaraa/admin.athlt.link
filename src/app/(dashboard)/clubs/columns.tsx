@@ -78,33 +78,33 @@ export const columns = ({ actions }: { actions: actionsProps[] }) => [
     accessorKey: "type",
     header: "Type",
   },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }: any) => {
-      const { original } = row;
-      return (
-        <Switch
-          onCheckedChange={async (val) => {
-            try {
-              const { error } = await supabase
-                .from("clubs")
-                .update({
-                  status: val ? CLUBS_STATUS.ACTIVE : CLUBS_STATUS.DISABLED,
-                })
-                .eq("id", original.id);
-              if (error) throw error;
-              toast.success("Club updated successfuly");
-            } catch (err) {
-              console.log(err);
-              toast.error("Error updating status");
-            }
-          }}
-          defaultChecked={original.status === CLUBS_STATUS.ACTIVE}
-        />
-      );
-    },
-  },
+  // {
+  //   accessorKey: "status",
+  //   header: "Status",
+  //   cell: ({ row }: any) => {
+  //     const { original } = row;
+  //     return (
+  //       <Switch
+  //         onCheckedChange={async (val) => {
+  //           try {
+  //             const { error } = await supabase
+  //               .from("clubs")
+  //               .update({
+  //                 status: val ? CLUBS_STATUS.ACTIVE : CLUBS_STATUS.DISABLED,
+  //               })
+  //               .eq("id", original.id);
+  //             if (error) throw error;
+  //             toast.success("Club updated successfuly");
+  //           } catch (err) {
+  //             console.log(err);
+  //             toast.error("Error updating status");
+  //           }
+  //         }}
+  //         defaultChecked={original.status === CLUBS_STATUS.ACTIVE}
+  //       />
+  //     );
+  //   },
+  // },
   {
     id: "actions",
     header: "",
