@@ -26,8 +26,8 @@ const Heading1 = ({ children, back, buttons }: Props) => {
       <span className="font-bold text-xl leading-tight">{children}</span>
       <div className="ml-auto flex gap-4">
         {buttons &&
-          buttons.map((button) => (
-            <Button key={button?.label} onClick={button.click}>
+          buttons.map((button, index) => (
+            <Button key={index} onClick={button.click}>
               {button?.label}
             </Button>
           ))}
