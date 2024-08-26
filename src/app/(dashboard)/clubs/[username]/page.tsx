@@ -20,6 +20,7 @@ import selectors from "@/utils/selectors";
 import RowManipulator from "@/components/ui/row-manipulator";
 import { toast } from "sonner";
 import { generic } from "@/utils/generic";
+import { supabase } from "@/lib/supabase";
 
 function Page({ params }: { params: { username: string } }) {
   const { username } = params;
@@ -189,12 +190,41 @@ function Page({ params }: { params: { username: string } }) {
     fetch();
   }, []);
 
+  console.log({ club });
+
   return (
     <>
       <Heading1
         back="/clubs"
         buttons={[
-          { label: "Copy Admin Link", click: () => copy(club.associate_code) },
+          {
+            label: "Copy Admin Link",
+            click: async () => {
+              try {
+                let code = club.associate_code;
+
+                if (!code) {
+                  code = generic.misc.code(6, club.username.substr(0, 3));
+
+                  const { error } = await supabase
+                    .from("clubs")
+                    .update({ associate_code: code })
+                    .eq("id", club.id);
+
+                  if (error) {
+                    toast.error(`Error updating associate code`);
+                    return;
+                  }
+
+                  setClub((prev: any) => ({ ...prev, associate_code: code }));
+                }
+
+                copy(`${app.website_url}/associate/${code}`);
+              } catch (err) {
+                toast.error("Error");
+              }
+            },
+          },
           {
             label: "Club Dashboard",
             click: () => router.push(`${app.website_url}/d/${club.username}`),
