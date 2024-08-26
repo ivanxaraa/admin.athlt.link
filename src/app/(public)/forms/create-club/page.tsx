@@ -52,7 +52,7 @@ function Page({ params }: { params: { username: string } }) {
       },
       {
         id: "type",
-        label: "Type",
+        label: "Type *",
         data: ["High School", "College", "Club"].map((x) => ({
           label: x,
           value: x,
@@ -60,13 +60,13 @@ function Page({ params }: { params: { username: string } }) {
         field_type: "combobox",
       },
       {
-        label: "Username",
+        label: "Username *",
         id: "username",
         placeholder: "Username",
       },
       {
         id: "name",
-        label: "Club Name",
+        label: "Club Name *",
         placeholder: "Club name",
       },
       {
@@ -81,12 +81,12 @@ function Page({ params }: { params: { username: string } }) {
         data: selectors.states,
         field_type: "combobox",
       },
-      {
-        id: "county",
-        label: "County",
-        data: selectors.counties,
-        field_type: "combobox",
-      },
+      // {
+      //   id: "county",
+      //   label: "County",
+      //   data: selectors.counties,
+      //   field_type: "combobox",
+      // },
       {
         id: "website",
         label: "Website",
@@ -149,9 +149,9 @@ function Page({ params }: { params: { username: string } }) {
       },
       {
         id: "phone",
-        label: "Phone",
+        label: "Phone *",
         type: "number",
-        placeholder: "+351",
+        placeholder: "+1",
       },
     ],
   });
@@ -244,8 +244,12 @@ function Page({ params }: { params: { username: string } }) {
             <GroupForm>
               <div className="flex justify-end items-center w-full col-span-2 gap-4">
                 <Button
-                  disabled={clubsControl.validate(club, false)}
-                  onClick={() => setSteps("teams")}
+                  // disabled={clubsControl.validate(club, false)}
+                  onClick={() => {
+                    if (clubsControl.validate(club, fieldsClub, setFieldsClub))
+                      return;
+                    setSteps("teams");
+                  }}
                 >
                   Next Step
                 </Button>

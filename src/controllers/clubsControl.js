@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { cn } from "@/lib/utils";
 import { app } from "@/utils/constants";
 import { generic } from "@/utils/generic";
 import { toast } from "sonner";
@@ -48,14 +49,41 @@ export const clubsControl = {
       // console.log(response);
     },
   },
-  validate: (club, alerts = true) => {
-    const mandatory = ["username", "name", "type"];
-    const missing_field = mandatory.find((key) => !club[key]);
-    if (missing_field && alerts) {
-      toast.warning(`Field '${missing_field}' should not be empty`);
+  validate: (club, fieldsClub, setFieldsClub, alerts = true) => {
+    const mandatory = ["username", "name", "type", "phone"];
+    const missing_fields = mandatory.filter((key) => !club[key]);
+
+    if (missing_fields.length > 0) {
+      setFieldsClub((prev) => {
+        const updatedFieldsClub = { ...prev };
+
+        Object.keys(updatedFieldsClub).forEach((section) => {
+          updatedFieldsClub[section] = updatedFieldsClub[section].map(
+            (field) => {
+              if (missing_fields.includes(field.id)) {
+                return {
+                  ...field,
+                  labelClass: cn("text-red-400"),
+                };
+              }
+              return field;
+            }
+          );
+        });
+
+        return updatedFieldsClub;
+      });
     }
-    return !!missing_field;
+
+    if (missing_fields.length > 0 && alerts) {
+      toast.warning(
+        `Fields '${missing_fields.join(", ")}' should not be empty`
+      );
+    }
+
+    return missing_fields.length > 0;
   },
+
   update: async (club) => {
     if (clubsControl.validate(club)) return;
     const { data, error } = await supabase

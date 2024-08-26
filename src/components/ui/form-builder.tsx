@@ -7,6 +7,7 @@ import RowManipulator from "@/components/ui/row-manipulator";
 import React, { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { generic } from "@/utils/generic";
+import { ImageUp, Upload } from "lucide-react";
 
 const FormBuilder = ({
   fields,
@@ -26,6 +27,7 @@ const FormBuilder = ({
               <FormRow
                 key={idx}
                 label={field.label}
+                labelClass={field.labelClass}
                 className={field.className}
               >
                 {field.field_type === "row-manipulator" ? (
@@ -71,7 +73,9 @@ const FormBuilder = ({
                             : data[field.id]
                         }
                       />
-                      <AvatarFallback></AvatarFallback>
+                      <AvatarFallback>
+                        <Upload className="size-6 text-gray-400" />
+                      </AvatarFallback>
                     </Avatar>
                   </>
                 ) : (

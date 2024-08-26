@@ -11,11 +11,10 @@ const memoize = (fn) => {
 };
 
 const getCountries = memoize(() => [
-  ...COUNTRIES.filter((c) => c !== "USA").map((c) => ({
+  ...COUNTRIES.map((c) => ({
     value: c,
     label: c,
   })),
-  { value: "USA", label: "USA" },
 ]);
 
 const getStates = memoize(() => STATES.map((s) => ({ value: s, label: s })));
