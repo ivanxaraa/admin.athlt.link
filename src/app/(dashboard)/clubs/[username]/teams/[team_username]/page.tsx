@@ -30,7 +30,7 @@ function Page({
   };
 
   const invite = (type = "normal") => {
-    const code = type === "normal" ? team.team_code : team.team_code_paid;
+    const code = type !== "normal" ? team.team_code : team.team_code_paid;
     let text;
 
     switch (type) {
