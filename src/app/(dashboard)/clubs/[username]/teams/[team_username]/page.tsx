@@ -37,7 +37,7 @@ function Page({
       case "normal":
         text = `Hey, you’ve been invited to join ${team.club.name} ${
           team.name
-        } on ATHLT.
+        } on ATHLT, the best platform for LIVE recruiting.
   
   Use this link to download the app and create your free profile: ${
     window.location.origin
@@ -56,7 +56,7 @@ function Page({
       case "free_verification":
         text = `Hey, you’ve been invited to join ${team.club.name} ${
           team.name
-        } on ATHLT.
+        } on ATHLT, the best platform for LIVE recruiting.
   
   Use this link to download the app and create your free profile: ${
     window.location.origin
@@ -74,7 +74,7 @@ function Page({
         break;
 
       case "free":
-        text = `Hey, you’ve been invited to join ${team.club.name} ${team.name} on ATHLT.
+        text = `Hey, you’ve been invited to join ${team.club.name} ${team.name} on ATHLT, the best platform for LIVE recruiting.
   
   Use this link to download the app and create your free profile: ${window.location.origin}/invite/${code}
   
