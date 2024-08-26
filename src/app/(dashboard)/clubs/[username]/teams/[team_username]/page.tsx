@@ -9,6 +9,7 @@ import Heading1 from "@/components/ui/heading-1";
 import { Input } from "@/components/ui/input";
 import RowManipulator from "@/components/ui/row-manipulator";
 import { teamsControl } from "@/controllers/teamsControl";
+import { app } from "@/utils/constants";
 import { copy } from "@/utils/copy";
 import { generic } from "@/utils/generic";
 import { useRouter } from "next/navigation";
@@ -39,9 +40,7 @@ function Page({
           team.name
         } on ATHLT, the best platform for LIVE recruiting.
   
-  Use this link to download the app and create your free profile: ${
-    window.location.origin
-  }/invite/${code}
+  Use this link to download the app and create your free profile: https://athlt.link/download
   
   Access your Dashboard - TeamLink and enter the code: ${code}
   
@@ -58,32 +57,30 @@ function Page({
           team.name
         } on ATHLT, the best platform for LIVE recruiting.
   
-  Use this link to download the app and create your free profile: ${
-    window.location.origin
-  }/invite/${code}
+Use this link to download the app and create your free profile: https://athlt.link/download
   
-  Access your Dashboard - TeamLink and enter the code: ${code}
+Access your Dashboard - TeamLink and enter the code: ${code}
   
-  Connect to your team costs only $${generic.number.toDecimal(
-    team.club.fee
-  )} for the full season.
-  As a special offer, you can verify your ID for free.
+Connect to your team costs only $${generic.number.toDecimal(
+          team.club.fee
+        )} for the full season.
+As a special offer, you can verify your ID for free.
   
-  For more information about ATHLT:
-  www.athlt.link`;
+For more information about ATHLT:
+www.athlt.link`;
         break;
 
       case "free":
         text = `Hey, you’ve been invited to join ${team.club.name} ${team.name} on ATHLT, the best platform for LIVE recruiting.
   
-  Use this link to download the app and create your free profile: ${window.location.origin}/invite/${code}
+Use this link to download the app and create your free profile: https://athlt.link/download
   
-  Access your Dashboard - TeamLink and enter the code: ${code}
+Access your Dashboard - TeamLink and enter the code: ${code}
   
-  Connect to your team it’s free for the full season.
+Connect to your team it’s free for the full season.
   
-  For more information about ATHLT:
-  www.athlt.link`;
+For more information about ATHLT:
+www.athlt.link`;
         break;
 
       default:
