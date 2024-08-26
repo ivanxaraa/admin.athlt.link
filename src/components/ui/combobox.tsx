@@ -24,11 +24,19 @@ export function Combobox({ data, defaultValue, id, onChange }: any) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(defaultValue);
 
+  console.log({ value });
+  console.log({ defaultValue });
+
   const changeValue = (selectedValue: any) => {
+    console.log({ selectedValue });
+
     setValue(selectedValue === value ? "" : selectedValue);
     setOpen(false);
     onChange(id, selectedValue);
   };
+  // React.useEffect(() => {
+  //   setValue(defaultValue);
+  // }, [defaultValue]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -41,7 +49,7 @@ export function Combobox({ data, defaultValue, id, onChange }: any) {
         >
           {value
             ? data.find((framework: any) => framework.value === value)?.label
-            : "Select..."}
+            : defaultValue ? defaultValue : "Select..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>

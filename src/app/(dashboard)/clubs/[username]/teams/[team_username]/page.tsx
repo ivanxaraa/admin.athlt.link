@@ -9,7 +9,7 @@ import Heading1 from "@/components/ui/heading-1";
 import { Input } from "@/components/ui/input";
 import RowManipulator from "@/components/ui/row-manipulator";
 import { teamsControl } from "@/controllers/teamsControl";
-import { app } from "@/utils/constants";
+import { TEAMS_INVIATION_TYPES, app } from "@/utils/constants";
 import { copy } from "@/utils/copy";
 import { generic } from "@/utils/generic";
 import { useRouter } from "next/navigation";
@@ -106,6 +106,19 @@ www.athlt.link`;
     ],
     Details: [
       {
+        id: "invitation_type",
+        label: "Invitation Type",
+        data: Object.keys(TEAMS_INVIATION_TYPES).map((key) => {
+          const type =
+            TEAMS_INVIATION_TYPES[key as keyof typeof TEAMS_INVIATION_TYPES];
+          return {
+            label: type,
+            value: type,
+          };
+        }),
+        field_type: "combobox",
+      },
+      {
         label: "Username",
         id: "username",
         placeholder: "Username",
@@ -156,6 +169,7 @@ www.athlt.link`;
   //   },
   //   enabled: !!queryInvoice.isSuccess && !!queryInvoice.data.proofFilestoreId,
   // });
+
 
   return (
     <>

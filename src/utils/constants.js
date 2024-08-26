@@ -30,3 +30,9 @@ export const TEAMS_STATUS = {
   ACTIVE: "active",
   DISABLED: "disabled",
 };
+
+export const TEAMS_INVIATION_TYPES = {
+  PAID: "Paid",
+  FREE: "Free",
+  VERIFICATION: "Verification Free",
+};

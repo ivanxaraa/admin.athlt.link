@@ -80,6 +80,10 @@ export const columns = ({ actions }: { actions: actionsProps[] }) => [
     },
   },
   {
+    accessorKey: "invitation_type",
+    header: "Invitation Type",
+  },
+  {
     id: "actions",
     header: "",
     cell: ({ row }: any) => {

@@ -6,6 +6,7 @@ import GroupForm from "@/components/ui/group-form";
 import Heading1 from "@/components/ui/heading-1";
 import { clubsControl } from "@/controllers/clubsControl";
 import { teamsControl } from "@/controllers/teamsControl";
+import { TEAMS_INVIATION_TYPES } from "@/utils/constants";
 import { generic } from "@/utils/generic";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -28,6 +29,20 @@ function Page({ params }: { params: { username: string } }) {
       },
     ],
     Details: [
+      {
+        id: "invitation_type",
+        label: "Invitation Type",
+        data: Object.keys(TEAMS_INVIATION_TYPES).map((key) => {
+          const type =
+            TEAMS_INVIATION_TYPES[key as keyof typeof TEAMS_INVIATION_TYPES];
+          return {
+            label: type,
+            value: type,
+          };
+        }),
+        field_type: "combobox",
+        
+      },
       {
         label: "Username",
         id: "username",
