@@ -41,7 +41,6 @@ function Page({ params }: { params: { username: string } }) {
           };
         }),
         field_type: "combobox",
-        
       },
       {
         label: "Username",
@@ -72,8 +71,9 @@ function Page({ params }: { params: { username: string } }) {
   });
 
   const [team, setTeam] = useState<any>({
-    team_code: generic.misc.code(6),
+    team_code_invitation: generic.misc.code(7),
     team_code_paid: generic.misc.code(5),
+    team_code: generic.misc.code(6),
   });
 
   const inputChange = (key: string, value: any) => {

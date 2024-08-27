@@ -216,8 +216,9 @@ function Page({ params }: { params: { username: string } }) {
       teams = teams.map((team: any) => ({
         ...team,
         club: club_id,
-        team_code: generic.misc.code(6),
+        team_code_invitation: generic.misc.code(7),
         team_code_paid: generic.misc.code(5),
+        team_code: generic.misc.code(6),
       }));
       const { error: teamsError } = await supabase.from("teams").insert(teams);
       console.log({ teamsError });

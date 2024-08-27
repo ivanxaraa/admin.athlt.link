@@ -9,12 +9,15 @@ import Heading1 from "@/components/ui/heading-1";
 import { Input } from "@/components/ui/input";
 import RowManipulator from "@/components/ui/row-manipulator";
 import { teamsControl } from "@/controllers/teamsControl";
+import { supabase } from "@/lib/supabase";
 import { TEAMS_INVIATION_TYPES, app } from "@/utils/constants";
 import { copy } from "@/utils/copy";
 import { generic } from "@/utils/generic";
+import { getTextInvitation } from "@/utils/texts";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { text } from "stream/consumers";
 
 function Page({
   params,
@@ -30,57 +33,40 @@ function Page({
     setTeam((prev: any) => ({ ...prev, [key]: value }));
   };
 
-  const invite = (type = "normal") => {
-    const code = type !== "normal" ? team.team_code : team.team_code_paid;
-    let text;
+  const invite = async (type: "paid" | "free_verification" | "free") => {
+    let text: string;
 
     switch (type) {
-      case "normal":
-        text = `Hey, you’ve been invited to join ${team.club.name} ${
-          team.name
-        } on ATHLT, the best platform for LIVE recruiting.
-  
-  Use this link to download the app and create your free profile: https://athlt.link/download
-  
-  Access your Dashboard - TeamLink and enter the code: ${code}
-  
-  Connect to your team costs only $${generic.number.toDecimal(
-    team.club.fee
-  )} for the full season.
-  
-  For more information about ATHLT:
-  www.athlt.link`;
+      case "paid":
+        text = getTextInvitation.paid(team.club, team, team.team_code_paid);
         break;
 
       case "free_verification":
-        text = `Hey, you’ve been invited to join ${team.club.name} ${
-          team.name
-        } on ATHLT, the best platform for LIVE recruiting.
-  
-Use this link to download the app and create your free profile: https://athlt.link/download
-  
-Access your Dashboard - TeamLink and enter the code: ${code}
-  
-Connect to your team costs only $${generic.number.toDecimal(
-          team.club.fee
-        )} for the full season.
-As a special offer, you can verify your ID for free.
-  
-For more information about ATHLT:
-www.athlt.link`;
+        let code = team.team_code_invitation;
+
+        if (!code) {
+          code = generic.misc.code(7);
+
+          const { error } = await supabase
+            .from("teams")
+            .update({ team_code_invitation: code })
+            .eq("id", team.id);
+
+          if (error) {
+            toast.error(
+              `Error updating 'team_code_invitation': ${error.message}`
+            );
+            return;
+          }
+
+          setTeam((prev: any) => ({ ...prev, team_code_invitation: code }));
+        }
+
+        text = getTextInvitation.freeVerification(team.club, team, code);
         break;
 
       case "free":
-        text = `Hey, you’ve been invited to join ${team.club.name} ${team.name} on ATHLT, the best platform for LIVE recruiting.
-  
-Use this link to download the app and create your free profile: https://athlt.link/download
-  
-Access your Dashboard - TeamLink and enter the code: ${code}
-  
-Connect to your team it’s free for the full season.
-  
-For more information about ATHLT:
-www.athlt.link`;
+        text = getTextInvitation.free(team.club, team, team.team_code);
         break;
 
       default:
@@ -170,13 +156,12 @@ www.athlt.link`;
   //   enabled: !!queryInvoice.isSuccess && !!queryInvoice.data.proofFilestoreId,
   // });
 
-
   return (
     <>
       <Heading1
         back={`/clubs/${username}`}
         buttons={[
-          { label: "Invite", click: () => invite() },
+          { label: "Invite", click: () => invite("paid") },
           {
             label: "Free Invite",
             click: () => invite("free"),
