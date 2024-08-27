@@ -42,27 +42,11 @@ function Page({
         break;
 
       case "free_verification":
-        let code = team.team_code_invitation;
-
-        if (!code) {
-          code = generic.misc.code(7);
-
-          const { error } = await supabase
-            .from("teams")
-            .update({ team_code_invitation: code })
-            .eq("id", team.id);
-
-          if (error) {
-            toast.error(
-              `Error updating 'team_code_invitation': ${error.message}`
-            );
-            return;
-          }
-
-          setTeam((prev: any) => ({ ...prev, team_code_invitation: code }));
-        }
-
-        text = getTextInvitation.freeVerification(team.club, team, code);
+        text = getTextInvitation.freeVerification(
+          team.club,
+          team,
+          team.team_code_invitation
+        );
         break;
 
       case "free":
