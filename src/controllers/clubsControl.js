@@ -50,7 +50,7 @@ export const clubsControl = {
     },
   },
   validate: (club, fieldsClub, setFieldsClub, alerts = true) => {
-    const mandatory = ["username", "name", "type", "phone"];
+    const mandatory = ["username", "name", "type", "phone", "email", "country"];
     const missing_fields = mandatory.filter((key) => !club[key]);
 
     if (missing_fields.length > 0) {
@@ -63,7 +63,8 @@ export const clubsControl = {
               if (missing_fields.includes(field.id)) {
                 return {
                   ...field,
-                  labelClass: cn("text-red-400"),
+                  labelClass: "missingFieldText",
+                  className: "missingFieldBorder",
                 };
               }
               return field;

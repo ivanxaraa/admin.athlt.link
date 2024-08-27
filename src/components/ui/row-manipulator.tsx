@@ -24,7 +24,6 @@ export default function RowManipulator({
   children,
   onChange,
 }: ManipulatorProps) {
-
   const [inputs, setInputs] = useState<any>(data);
 
   const handleChange = (index: number, key: string, value: string) => {
@@ -33,11 +32,11 @@ export default function RowManipulator({
     setInputs(newData);
     if (onChange) onChange(id, newData);
   };
-  
+
   const addItem = () => {
     setInputs([...inputs, {}]);
   };
-  
+
   const removeItem = (index: number) => {
     const newData = [...inputs];
     newData.splice(index, 1);
@@ -56,9 +55,9 @@ export default function RowManipulator({
           {React.Children.map(children, (child: any, childIndex: number) =>
             React.cloneElement(child, {
               value: inputs[index][child?.key],
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                handleChange(index, child?.key, e.target.value),
-              key: child.key, // Ensuring each input has a unique key
+              onChange: (e: React.ChangeEvent<HTMLInputElement>, val: any) =>
+                handleChange(index, child?.key, e?.target?.value || val),
+              key: child.key,
             })
           )}
         </div>

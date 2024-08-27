@@ -26,7 +26,7 @@ import { teamsControl } from "@/controllers/teamsControl";
 
 function Page({ params }: { params: { username: string } }) {
   const router = useRouter();
-  const [steps, setSteps] = useState<"club" | "teams">("club");
+  const [steps, setSteps] = useState<"club" | "teams">("teams");
   const [club, setClub] = useState<any>({
     form: true,
   });
@@ -34,7 +34,7 @@ function Page({ params }: { params: { username: string } }) {
   const inputChange = (key: string, value: any) => {
     if (key === "teams") {
       value = value.map((obj: any) => {
-        obj.username = obj.username.replace(/[^\w]/g, "");
+        if (obj.username) obj.username = obj.username.replace(/[^\w]/g, "");
         return obj;
       });
     }
@@ -63,6 +63,8 @@ function Page({ params }: { params: { username: string } }) {
         label: "Username *",
         id: "username",
         placeholder: "Username",
+        prefix: "athlt.link/",
+        field_type: "prefix",
       },
       {
         id: "name",
@@ -166,14 +168,22 @@ function Page({ params }: { params: { username: string } }) {
         field_type: "row-manipulator",
         fields: [
           {
-            key: "username",
-            label: "Username",
-            placeholder: "Username",
+            key: "sport",
+            label: "Sport",
+            placeholder: "Sport",
+            data: selectors.sports,
+            field_type: "combobox",
           },
           {
             key: "name",
             label: "Team Name",
             placeholder: "Team name",
+          },
+          {
+            key: "username",
+            label: "Username",
+            placeholder: "Username",
+            prefix: "athlt.link/",
           },
           {
             key: "group_age",
@@ -183,12 +193,12 @@ function Page({ params }: { params: { username: string } }) {
           {
             key: "gender",
             label: "Gender",
+            data: ["Male", "Female", "Co-ed"].map((x) => ({
+              label: x,
+              value: x,
+            })),
             placeholder: "Gender",
-          },
-          {
-            key: "sport",
-            label: "Sport",
-            placeholder: "Sport",
+            field_type: "combobox",
           },
         ],
       },
@@ -264,6 +274,7 @@ function Page({ params }: { params: { username: string } }) {
               fields={fieldsTeam}
               data={club}
               inputChange={inputChange}
+              className="sm:grid-cols-1"
             />
             <GroupForm>
               <div className="flex justify-end items-center w-full col-span-2 gap-4">

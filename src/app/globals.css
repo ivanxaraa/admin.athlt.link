@@ -77,3 +77,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+.missingFieldText {
+  color: red;
+}
+
+.missingFieldBorder {
+  border: 1px solid red;
+}

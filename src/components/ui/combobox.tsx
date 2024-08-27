@@ -20,19 +20,24 @@ import {
 } from "@/components/ui/popover";
 import selectors from "@/utils/selectors";
 
-export function Combobox({ data, defaultValue, id, onChange }: any) {
+export function Combobox({
+  data,
+  defaultValue,
+  placeholder,
+  id,
+  onChange,
+  className,
+}: any) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(defaultValue);
 
   const changeValue = (selectedValue: any) => {
+    console.log({ selectedValue });
+
     setValue(selectedValue === value ? "" : selectedValue);
     setOpen(false);
     onChange(id, selectedValue);
   };
-  // React.useEffect(() => {
-  //   setValue(defaultValue);
-  // }, [defaultValue]);
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -40,11 +45,17 @@ export function Combobox({ data, defaultValue, id, onChange }: any) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="justify-between bg-white font-normal px-3"
+          className={cn("justify-between bg-white font-normal px-3", className)}
         >
-          {value
-            ? data.find((framework: any) => framework.value === value)?.label
-            : defaultValue ? defaultValue : "Select..."}
+          {value ? (
+            data.find((framework: any) => framework.value === value)?.label
+          ) : defaultValue ? (
+            defaultValue
+          ) : (
+            <span className="text-xs text-muted-foreground">
+              {placeholder || "Select..."}
+            </span>
+          )}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>

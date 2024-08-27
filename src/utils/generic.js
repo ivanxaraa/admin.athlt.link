@@ -30,6 +30,28 @@ export const generic = {
       }
     },
   },
+  arr: {
+    orderByAlphabet: (arr, key) => {
+      arr.sort((a, b) => {
+        let valueA, valueB;
+
+        if (key !== null) {
+          valueA = typeof a === "object" && a !== null ? a[key] || "" : a;
+          valueB = typeof b === "object" && b !== null ? b[key] || "" : b;
+        } else {
+          valueA = a;
+          valueB = b;
+        }
+
+        valueA = String(valueA).toLowerCase();
+        valueB = String(valueB).toLowerCase();
+
+        return valueA.localeCompare(valueB);
+      });
+
+      return arr;
+    },
+  },
   misc: {
     isFile: (variable) => {
       return variable instanceof File;
