@@ -23,6 +23,8 @@ import FormBuilder from "@/components/ui/form-builder";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { teamsControl } from "@/controllers/teamsControl";
+import axios from "axios";
+import TemplateNewClub from "@/components/templates/new-club";
 
 function Page({ params }: { params: { username: string } }) {
   const router = useRouter();
@@ -238,6 +240,13 @@ function Page({ params }: { params: { username: string } }) {
         return;
       }
     }
+
+    const response = await axios.post("/api/send", {
+      to: "agent@athlt.link",
+      subject: "ATHLT - New Club",
+      react: "TemplateNewClub",
+    });
+
     router.push(app.website_url);
   };
 
