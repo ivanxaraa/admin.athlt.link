@@ -70,11 +70,7 @@ function Page({ params }: { params: { username: string } }) {
     ],
   });
 
-  const [team, setTeam] = useState<any>({
-    team_code_invitation: generic.misc.code(7),
-    team_code_paid: generic.misc.code(5),
-    team_code: generic.misc.code(6),
-  });
+  const [team, setTeam] = useState<any>({});
 
   const inputChange = (key: string, value: any) => {
     if (key === "username") value = value.replace(/[^\w]/g, "");
@@ -103,8 +99,9 @@ function Page({ params }: { params: { username: string } }) {
         <GroupForm>
           <div className="flex justify-end items-center w-full col-span-2 gap-4">
             <Button
-              onClick={() => {
-                teamsControl.create(team, () => router.back());
+              onClick={async () => {
+                await teamsControl.create(team);
+                router.back();
               }}
             >
               Save Changes

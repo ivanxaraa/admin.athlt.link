@@ -50,7 +50,16 @@ export const clubsControl = {
     },
   },
   validate: (club, fieldsClub, setFieldsClub, alerts = true) => {
-    const mandatory = ["username", "name", "type", "phone", "email", "country"];
+    const mandatory = [
+      "username",
+      "name",
+      "type",
+      "phone",
+      "email",
+      "country",
+      "state",
+      "contact_name",
+    ];
     const missing_fields = mandatory.filter((key) => !club[key]);
 
     if (missing_fields.length > 0) {
@@ -97,14 +106,12 @@ export const clubsControl = {
       clubsControl.misc.uploadImage(club.logo, club.id, BUCKET);
   },
   create: async (club, redirect) => {
-    if (clubsControl.validate(club)) return;
     const { data, error } = await supabase.from(TABLE).insert(club).select();
     if (error) {
       toast.error("Something went wrong");
       return;
     }
     const club_id = data[0].id;
-    toast.success(`Club created successfully!`);
     if (generic.misc.isFile(club.logo))
       clubsControl.misc.uploadImage(club.logo, club_id, BUCKET);
     if (redirect) redirect();

@@ -45,18 +45,51 @@ export const teamsControl = {
     if (generic.misc.isFile(team.scan))
       teamsControl.misc.uploadImage("scan", team, BUCKET);
   },
-  create: async (team, redirect) => {
-    if (teamsControl.validate(team)) return;
-    const { data, error } = await supabase.from(TABLE).insert(team).select();
-    if (error) return toast.error("Something went wrong");
-    team.id = data[0].id;
-    toast.success(`Team created successfully!`);
-    if (generic.misc.isFile(team.qrcode))
-      teamsControl.misc.uploadImage("qrcode", team, BUCKET);
-    if (generic.misc.isFile(team.scan))
-      teamsControl.misc.uploadImage("scan", team, BUCKET);
-    redirect();
+  create: async (teamsOrTeam) => {
+    try {
+      const teams = teamsOrTeam?.length ? teamsOrTeam : [teamsOrTeam];
+
+      for (const team of teams) {
+        if (teamsControl.validate(team)) {
+          console.log("error team", team);
+          throw new Error(`Invalid team data: ${team.name || "Unknown"}`);
+        }
+      }
+
+      const teamsWithCodes = await Promise.all(
+        teams.map(async (team) => ({
+          ...team,
+          team_code_invitation: await teamsControl.misc.code(5),
+          team_code_paid: await teamsControl.misc.code(5),
+          team_code: await teamsControl.misc.code(5),
+        }))
+      );
+
+      const { data, error } = await supabase
+        .from(TABLE)
+        .insert(teamsWithCodes)
+        .select();
+      if (error) {
+        throw new Error("Database insert operation failed");
+      }
+
+      teamsWithCodes.forEach((team, index) => {
+        team.id = data[index].id;
+        if (generic.misc.isFile(team.qrcode)) {
+          teamsControl.misc.uploadImage("qrcode", team, BUCKET);
+        }
+        if (generic.misc.isFile(team.scan)) {
+          teamsControl.misc.uploadImage("scan", team, BUCKET);
+        }
+      });
+
+      return true;
+    } catch (error) {
+      toast.error(error.message);
+      return false;
+    }
   },
+
   delete: async (team) => {
     const { error } = await supabase.from(TABLE).delete().eq("id", team.id);
     if (error) return toast.error("Something went wrong!");
@@ -80,6 +113,23 @@ export const teamsControl = {
           [key]: `${app.storage_url}/${BUCKET}/${filename}`,
         })
         .eq("id", data.id);
+    },
+    code: async (size, text) => {
+      let data;
+      let code;
+
+      do {
+        code = generic.misc.code(size, text);
+        ({ data } = await supabase
+          .from("teams")
+          .select()
+          .or(
+            `team_code.eq.${code},team_code_paid.eq.${code},team_code_invitation.eq.${code}`
+          )
+          .single());
+      } while (data); // Repeat if data is not null
+
+      return code;
     },
   },
 };

@@ -190,8 +190,6 @@ function Page({ params }: { params: { username: string } }) {
     fetch();
   }, []);
 
-  console.log({ club });
-
   return (
     <>
       <Heading1

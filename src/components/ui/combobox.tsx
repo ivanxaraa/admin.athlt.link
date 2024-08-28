@@ -32,8 +32,6 @@ export function Combobox({
   const [value, setValue] = React.useState(defaultValue);
 
   const changeValue = (selectedValue: any) => {
-    console.log({ selectedValue });
-
     setValue(selectedValue === value ? "" : selectedValue);
     setOpen(false);
     onChange(id, selectedValue);

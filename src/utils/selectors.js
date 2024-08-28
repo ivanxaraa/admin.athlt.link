@@ -1,39 +1,44 @@
-import COUNTRIES from "../json/countries.json";
-import STATES from "../json/states.json";
+// Import statements ordered alphabetically
 import COUNTIES from "../json/counties.json";
+import COUNTRIES from "../json/countries.json";
 import SPORTS from "../json/sports.json";
+import STATES from "../json/states.json";
 import { generic } from "./generic";
 
+// Memoization function
 const memoize = (fn) => {
   const cache = {};
   return (...args) => {
     const stringifiedArgs = JSON.stringify(args);
-    return cache[stringifiedArgs] || (cache[stringifiedArgs] = fn(...args));
+    if (stringifiedArgs in cache) return cache[stringifiedArgs];
+    cache[stringifiedArgs] = fn(...args);
+    return cache[stringifiedArgs];
   };
 };
 
-const getCountries = memoize(() => [
-  ...COUNTRIES.map((c) => ({
-    value: c,
-    label: c,
-  })),
-]);
-
-const getStates = memoize(() => STATES.map((s) => ({ value: s, label: s })));
-
+// Functions ordered alphabetically
 const getCounties = memoize(() =>
-  COUNTIES.map((c) => ({ value: c.County, label: c.County }))
+  COUNTIES.sort().map((c) => ({ value: c.County, label: c.County }))
+);
+
+const getCountries = memoize(() =>
+  COUNTRIES.sort().map((c) => ({ value: c, label: c }))
 );
 
 const getSports = memoize(() =>
-  generic.arr.orderByAlphabet(SPORTS.map((s) => ({ value: s, label: s })))
+  SPORTS.sort().map((s) => ({ value: s, label: s }))
 );
 
+const getStates = memoize(() =>
+  STATES.sort().map((s) => ({ value: s, label: s }))
+);
+
+// Selectors object
 const selectors = {
-  countries: getCountries(),
-  states: getStates(),
   counties: getCounties(),
+  countries: getCountries(),
   sports: getSports(),
+  states: getStates(),
 };
 
 export default selectors;
