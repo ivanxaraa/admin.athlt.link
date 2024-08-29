@@ -48,7 +48,7 @@ export default function RowManipulator({
     const gridCols = index !== 0 ? "grid-cols-[1fr,38px]" : "grid-cols-1";
     return (
       <div
-        className={`grid ${gridCols} gap-[10px] w-full ${className}`}
+        className={`grid grid-cols-[1fr,38px] gap-[10px] w-full ${className}`}
         key={index}
       >
         <div className="w-full flex flex-col gap-2">
@@ -61,14 +61,12 @@ export default function RowManipulator({
             })
           )}
         </div>
-        {index !== 0 && (
-          <button
-            onClick={() => removeItem(index)}
-            className="h-full rounded-md text-white bg-red-200 hover:bg-red-300 transition-opacity w-full grid place-items-center"
-          >
-            <X size={18} />
-          </button>
-        )}
+        <button
+          onClick={() => removeItem(index)}
+          className="h-full rounded-md text-white bg-red-200 hover:bg-red-300 transition-opacity w-full grid place-items-center"
+        >
+          <X size={18} />
+        </button>
       </div>
     );
   };

@@ -14,6 +14,7 @@ import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { teamsControl } from "@/controllers/teamsControl";
 import axios from "axios";
+import TemplateNewClub from "@/components/templates/new-club";
 
 function Page({ params }: { params: { username: string } }) {
   const router = useRouter();
@@ -213,8 +214,8 @@ function Page({ params }: { params: { username: string } }) {
       if (invalid) return invalid;
 
       // Create Club
-      const club_id = await clubsControl.create(club);
-      if (!club_id) {
+      const createdClub = await clubsControl.create(club);
+      if (!createdClub.id) {
         toast.error("Error occurred while creating the club");
         return;
       }
@@ -223,12 +224,12 @@ function Page({ params }: { params: { username: string } }) {
       if (teams.length > 0) {
         const teamsWithClub = teams.map((team: any) => ({
           ...team,
-          club: club_id,
+          club: createdClub.id,
         }));
         // Create Teams
         const createdTeams = await teamsControl.create(teamsWithClub);
         if (!createdTeams) {
-          await supabase.from("clubs").delete().eq("id", club_id);
+          await supabase.from("clubs").delete().eq("id", createdClub.id);
           toast.error("Error occurred while creating teams");
           return;
         }
@@ -236,9 +237,10 @@ function Page({ params }: { params: { username: string } }) {
 
       // Send Notification
       await axios.post("/api/send", {
-        to: "riera@athlt.link",
+        to: ["agent@athlt.link", "paivssantos@gmail.com", "riera@athlt.link"],
         subject: "ATHLT - New Club",
-        react: "TemplateNewClub",
+        template: "TemplateNewClub",
+        props: { club: createdClub },
       });
 
       toast.success("Your club has been created", {
@@ -274,9 +276,14 @@ function Page({ params }: { params: { username: string } }) {
             <GroupForm>
               <div className="flex justify-end items-center w-full col-span-2 gap-4">
                 <Button
-                  // disabled={clubsControl.validate(club, false)}
-                  onClick={() => {
-                    if (clubsControl.validate(club, fieldsClub, setFieldsClub))
+                  onClick={async () => {
+                    if (
+                      await clubsControl.validate(
+                        club,
+                        fieldsClub,
+                        setFieldsClub
+                      )
+                    )
                       return;
                     setSteps("teams");
                   }}

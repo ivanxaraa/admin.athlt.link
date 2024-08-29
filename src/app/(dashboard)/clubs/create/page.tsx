@@ -262,11 +262,10 @@ function Page({ params }: { params: { username: string } }) {
           <GroupForm>
             <div className="flex justify-end items-center w-full col-span-2 gap-4">
               <Button
-                onClick={() =>
-                  clubsControl.create(club, () =>
-                    router.push(`${club.username}`)
-                  )
-                }
+                onClick={() => {
+                  clubsControl.create(club);
+                  router.push(`${club.username}`);
+                }}
               >
                 Create Club
               </Button>

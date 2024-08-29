@@ -2,6 +2,7 @@ import { supabase } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 import { app } from "@/utils/constants";
 import { generic } from "@/utils/generic";
+import axios from "axios";
 import { toast } from "sonner";
 
 const TABLE = "clubs";
@@ -49,7 +50,17 @@ export const clubsControl = {
       // console.log(response);
     },
   },
-  validate: (club, fieldsClub, setFieldsClub, alerts = true) => {
+  validate: async (club, fieldsClub, setFieldsClub, alerts = true) => {
+    if (club.username) {
+      const { data } = await axios.get(`/api/unique-username/${club.username}`);
+      if (!data.isUnique) {
+        toast.error("This username is already in use", {
+          description: "Please, try another one!",
+        });
+        return true;
+      }
+    }
+
     const mandatory = [
       "username",
       "name",
@@ -89,13 +100,12 @@ export const clubsControl = {
       toast.warning(
         `Fields '${missing_fields.join(", ")}' should not be empty`
       );
+      return true;
     }
-
-    return missing_fields.length > 0;
   },
 
   update: async (club) => {
-    if (clubsControl.validate(club)) return;
+    if (await clubsControl.validate(club)) return;
     const { data, error } = await supabase
       .from(TABLE)
       .update(club)
@@ -105,17 +115,20 @@ export const clubsControl = {
     if (generic.misc.isFile(club.logo))
       clubsControl.misc.uploadImage(club.logo, club.id, BUCKET);
   },
-  create: async (club, redirect) => {
-    const { data, error } = await supabase.from(TABLE).insert(club).select();
+  create: async (data) => {
+    const { data: createdClub, error } = await supabase
+      .from(TABLE)
+      .insert(data)
+      .select();
+
     if (error) {
       toast.error("Something went wrong");
       return;
     }
-    const club_id = data[0].id;
+    const club = createdClub[0];
     if (generic.misc.isFile(club.logo))
-      clubsControl.misc.uploadImage(club.logo, club_id, BUCKET);
-    if (redirect) redirect();
-    return club_id;
+      clubsControl.misc.uploadImage(club.logo, club.id, BUCKET);
+    return club;
   },
   delete: async (club) => {
     const { error } = await supabase.from(TABLE).delete().eq("id", club.id);
