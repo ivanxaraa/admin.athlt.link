@@ -148,6 +148,12 @@ function Page({ params }: { params: { username: string } }) {
     ],
     Contacts: [
       {
+        id: "contact_name",
+        label: "Name *",
+        type: "text",
+        placeholder: "Contact Name",
+      },
+      {
         id: "email",
         label: "Email",
         type: "email",

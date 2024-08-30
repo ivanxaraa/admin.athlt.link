@@ -52,7 +52,7 @@ export const clubsControl = {
   },
   validate: async (club, fieldsClub, setFieldsClub, alerts = true) => {
     if (club.username) {
-      const { data } = await axios.get(`/api/unique-username/${club.username}`);
+      const { data } = await axios.post(`/api/unique-username`, club);
       if (!data.isUnique) {
         toast.error("This username is already in use", {
           description: "Please, try another one!",
@@ -73,7 +73,7 @@ export const clubsControl = {
     ];
     const missing_fields = mandatory.filter((key) => !club[key]);
 
-    if (missing_fields.length > 0) {
+    if (missing_fields.length > 0 && setFieldsClub) {
       setFieldsClub((prev) => {
         const updatedFieldsClub = { ...prev };
 
@@ -104,7 +104,7 @@ export const clubsControl = {
     }
   },
 
-  update: async (club) => {
+  update: async (club, clubDefault) => {
     if (await clubsControl.validate(club)) return;
     const { data, error } = await supabase
       .from(TABLE)

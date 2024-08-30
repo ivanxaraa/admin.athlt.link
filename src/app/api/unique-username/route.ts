@@ -1,22 +1,23 @@
 import { supabase } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
-const queryTable = async (table: string, username: string) => {
+const queryTable = async (table: string, data: any) => {
   const response = await supabase
     .from(table)
     .select("*")
-    .eq("username", username);
+    .eq("username", data.username)
+    .neq("id", data.id);
   if (response.error) throw response.error;
 
   return response.data;
 };
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest, res: NextResponse) {
   try {
     // @ts-ignore
-    const { username } = res.params;
+    const data = await req.json();
 
-    if (!username) {
+    if (!data.username) {
       return NextResponse.json(
         { error: "Username is required" },
         { status: 400 }
@@ -24,9 +25,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
     }
 
     const [clubsData, userProfilesData, teamsData] = await Promise.all([
-      queryTable("clubs", username),
-      queryTable("user_profiles", username),
-      queryTable("teams", username),
+      queryTable("clubs", data),
+      queryTable("user_profiles", data),
+      queryTable("teams", data),
     ]);
 
     const usernameExists =

@@ -16,18 +16,18 @@ function Page({ params }: { params: { username: string } }) {
   const { username } = params;
   const router = useRouter();
   const [fields, setFields] = useState<any>({
-    Images: [
-      {
-        id: "qrcode",
-        label: "QR Code",
-        field_type: "image",
-      },
-      {
-        id: "scan",
-        label: "Scan",
-        field_type: "image",
-      },
-    ],
+    // Images: [
+    //   {
+    //     id: "qrcode",
+    //     label: "QR Code",
+    //     field_type: "image",
+    //   },
+    //   {
+    //     id: "scan",
+    //     label: "Scan",
+    //     field_type: "image",
+    //   },
+    // ],
     Details: [
       {
         id: "invitation_type",

@@ -62,18 +62,18 @@ function Page({
   };
 
   const [fields, setFields] = useState<any>({
-    Images: [
-      {
-        id: "qrcode",
-        label: "QR Code",
-        field_type: "image",
-      },
-      {
-        id: "scan",
-        label: "Scan",
-        field_type: "image",
-      },
-    ],
+    // Images: [
+    //   {
+    //     id: "qrcode",
+    //     label: "QR Code",
+    //     field_type: "image",
+    //   },
+    //   {
+    //     id: "scan",
+    //     label: "Scan",
+    //     field_type: "image",
+    //   },
+    // ],
     Details: [
       {
         id: "invitation_type",
