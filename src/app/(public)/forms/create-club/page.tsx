@@ -307,7 +307,7 @@ function Page({ params }: { params: { username: string } }) {
                 <Button variant="outline" onClick={() => setSteps("club")}>
                   Previous
                 </Button>
-                <Button onClick={() => save()}>Create club</Button>
+                <Button onClick={() => save()}>Send form</Button>
               </div>
             </GroupForm>
           </>
