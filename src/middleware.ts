@@ -23,10 +23,7 @@ export async function middleware(request: NextRequest) {
   ];
 
   if (!user || !temporary_admins.includes(user.id)) {
-    return NextResponse.json(
-      { message: "Unauthorized access!" },
-      { status: 401 }
-    );
+    return NextResponse.redirect("https://athlt.link/login");
   }
 }
 

@@ -89,7 +89,6 @@ export const teamsControl = {
       return false;
     }
   },
-
   delete: async (team) => {
     const { error } = await supabase.from(TABLE).delete().eq("id", team.id);
     if (error) return toast.error("Something went wrong!");
