@@ -10,7 +10,7 @@ Use this link to download the app and create your free profile:
 https://athlt.link/download
 
 Access your Dashboard - TeamLink and enter the code:
-${code}
+*${code}*
 
 Connect to your team costs only $${generic.number.toDecimal(
       club.fee
@@ -26,7 +26,7 @@ Use this link to download the app and create your free profile:
 https://athlt.link/download
 
 Access your Dashboard - TeamLink and enter the code:
-${code}
+*${code}*
 
 Connect to your team it’s free for the full season.
 
@@ -42,7 +42,7 @@ Use this link to download the app and create your free profile:
 https://athlt.link/download
 
 Access your Dashboard - TeamLink and enter the code:
-${code}
+*${code}*
 
 Connect to your team costs only $${generic.number.toDecimal(
       club.fee
