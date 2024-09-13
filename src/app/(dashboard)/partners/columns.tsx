@@ -1,0 +1,101 @@
+"use client";
+
+import { MoreHorizontal } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
+import { CLUBS_STATUS } from "@/utils/constants";
+import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
+
+interface actionsProps {
+  key?: string;
+  label: string;
+  click: Function;
+}
+
+export const columns = ({ actions }: { actions: actionsProps[] }) => [
+  {
+    id: "select",
+    header: ({ table }: any) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value: any) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }: any) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value: any) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+  },
+  {
+    accessorKey: "image",
+    header: "",
+    cell: ({ row }: any) => {
+      const { original } = row;
+      console.log(original);
+      
+      return (
+        <Avatar>
+          <AvatarImage src={original.image} />
+          <AvatarFallback></AvatarFallback>
+        </Avatar>
+      );
+    },
+  },
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    id: "actions",
+    header: "",
+    cell: ({ row }: any) => {
+      const { original } = row;
+
+      return (
+        <div className="text-right">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {actions.map((action, index) => (
+                <DropdownMenuItem
+                  key={index}
+                  onClick={() =>
+                    action.key
+                      ? action.click(action.key, original)
+                      : action.click(original)
+                  }
+                  className="cursor-pointer"
+                >
+                  {action.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      );
+    },
+  },
+];
