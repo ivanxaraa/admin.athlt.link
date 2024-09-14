@@ -42,6 +42,12 @@ function Page({ params }: { params: { username: string } }) {
         field_type: "textarea",
         className: "col-span-2",
       },
+      {
+        id: "url",
+        label: "Partner URL",
+        placeholder: "Partner URL",
+        className: "col-span-2",
+      },
     ],
   });
 
