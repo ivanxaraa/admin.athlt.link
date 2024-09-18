@@ -10,6 +10,7 @@ import {
   GripVertical,
   Medal,
   PersonStanding,
+  Plus,
   Tag,
   UsersRound,
 } from "lucide-react";
@@ -28,6 +29,7 @@ import { generic } from "@/utils/generic";
 import { supabase } from "@/lib/supabase";
 import { Switch } from "@/components/ui/switch";
 import { Reorder, useDragControls } from "framer-motion";
+import Link from "next/link";
 
 const Item = ({ item }: any) => {
   const router = useRouter();
@@ -439,7 +441,15 @@ function Page({ params }: { params: { username: string } }) {
       {/* teams */}
       {activals.section === "Teams" && (
         <div className="bg-white p-8 mt-4">
-          <span className="text-lg">Teams</span>
+          <div className="flex items-center">
+            <span className="text-lg">Teams</span>
+            <Link className="ml-auto" href={`${username}/teams/create`}>
+              <Button className="gap-2">
+                <Plus className="size-4" />
+                Create Team
+              </Button>
+            </Link>
+          </div>
           <div className="mt-8">
             <Reorder.Group
               axis="y"
