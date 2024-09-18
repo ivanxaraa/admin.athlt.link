@@ -6,14 +6,19 @@ import Heading1 from "@/components/ui/heading-1";
 import { Input } from "@/components/ui/input";
 import { clubsControl } from "@/controllers/clubsControl";
 import { app, env, icon_size } from "@/utils/constants";
-import { UsersRound } from "lucide-react";
+import {
+  GripVertical,
+  Medal,
+  PersonStanding,
+  Tag,
+  UsersRound,
+} from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import React, { useEffect, useState } from "react";
 import GroupForm from "@/components/ui/group-form";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { copy } from "@/utils/copy";
-import { columns } from "./columns";
 import { useRouter } from "next/navigation";
 import { Combobox } from "@/components/ui/combobox";
 import selectors from "@/utils/selectors";
@@ -21,6 +26,71 @@ import RowManipulator from "@/components/ui/row-manipulator";
 import { toast } from "sonner";
 import { generic } from "@/utils/generic";
 import { supabase } from "@/lib/supabase";
+import { Switch } from "@/components/ui/switch";
+import { Reorder, useDragControls } from "framer-motion";
+
+const Item = ({ item }: any) => {
+  const router = useRouter();
+  const controls = useDragControls();
+  return (
+    <Reorder.Item value={item} dragListener={false} dragControls={controls}>
+      <button className="flex items-center gap-4 w-full justify-center bg-white border rounded-lg p-4">
+        <GripVertical onPointerDown={(e) => controls.start(e)} />
+        <div
+          className="flex items-center gap-4 w-full"
+          onClick={() => router.push(`/clubs/albion/teams/${item.username}`)}
+        >
+          <Avatar className="size-8">
+            <AvatarImage src={item.image} />
+            <AvatarFallback></AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col">
+            <span className="font-semibold text-sm text-left whitespace-nowrap">
+              {item.name}
+            </span>
+            <span className="text-left text-xs whitespace-nowrap">
+              {item.username}
+            </span>
+          </div>
+          <div className="flex items-center justify-evenly gap-2 w-full">
+            <div className="flex items-center gap-2">
+              <Tag className="size-4" strokeWidth={1.5} />
+              <span className="text-xs">{item.invitation_type}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Medal className="size-4" strokeWidth={1.2} />
+              <span className="text-xs">{item.sport}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <PersonStanding className="size-4" strokeWidth={1.5} />
+              <span className="text-xs">{item.gender}</span>
+            </div>
+          </div>
+        </div>
+        <div className="ml-auto flex items-center">
+          <Switch
+            onClick={(e) => e.stopPropagation()}
+            onCheckedChange={async (val) => {
+              try {
+                const { error } = await supabase
+                  .from("teams")
+                  .update({ status: val })
+                  .eq("id", item.id);
+
+                if (error) throw error;
+
+                toast.success(`Team modified successfully!`);
+              } catch (err) {
+                toast.error("Error!");
+              }
+            }}
+            defaultChecked={item.status}
+          />
+        </div>
+      </button>
+    </Reorder.Item>
+  );
+};
 
 function Page({ params }: { params: { username: string } }) {
   const { username } = params;
@@ -196,6 +266,22 @@ function Page({ params }: { params: { username: string } }) {
     fetch();
   }, []);
 
+  const handleReorder = async (newOrder: any[]) => {
+    try {
+      setTeams(newOrder);
+
+      const updates = newOrder.map((item: any, index: number) => ({
+        ...item,
+        order: index,
+      }));
+
+      const { error } = await supabase.from("teams").upsert(updates);
+      if (error) throw error;
+    } catch (err) {
+      toast.error("Error");
+    }
+  };
+
   return (
     <>
       <Heading1
@@ -355,22 +441,16 @@ function Page({ params }: { params: { username: string } }) {
         <div className="bg-white p-8 mt-4">
           <span className="text-lg">Teams</span>
           <div className="mt-8">
-            <DataTable
-              columns={columns({
-                actions: [{ label: "View", click: actions.view }],
-              })}
-              data={teams}
-              hide={{ columns: true }}
-              buttons={[
-                {
-                  label: "Create Team",
-                  click: () => router.push(`${username}/teams/create`),
-                },
-              ]}
-              rowClick={(row: any) =>
-                router.push(`${username}/teams/${row.username}`)
-              }
-            />
+            <Reorder.Group
+              axis="y"
+              values={teams}
+              onReorder={handleReorder}
+              className="flex flex-col gap-2"
+            >
+              {teams.map((item: any, index: any) => (
+                <Item item={item} key={item.id} />
+              ))}
+            </Reorder.Group>
           </div>
         </div>
       )}
