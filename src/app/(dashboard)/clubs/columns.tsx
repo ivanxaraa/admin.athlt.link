@@ -59,12 +59,12 @@ export const columns = ({ actions }: { actions: actionsProps[] }) => [
     },
   },
   {
-    accessorKey: "username",
-    header: "Username",
-  },
-  {
     accessorKey: "name",
     header: "Name",
+  },
+  {
+    accessorKey: "username",
+    header: "Username",
   },
   {
     accessorKey: "country",
