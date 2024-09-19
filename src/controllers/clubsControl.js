@@ -31,7 +31,8 @@ export const clubsControl = {
       const { data, error } = await supabase
         .from("teams")
         .select()
-        .eq("club", club_id);
+        .eq("club", club_id)
+        .order("order");
 
       return data;
     },
