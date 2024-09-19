@@ -11,10 +11,7 @@ const BUCKET = "avatars_clubs";
 export const clubsControl = {
   get: {
     all: async () => {
-      const { data, error } = await supabase
-        .from(TABLE)
-        .select()
-        .order("name", { ascending: true });
+      const { data, error } = await supabase.from(TABLE).select().order("name");
       return data || [];
     },
 
