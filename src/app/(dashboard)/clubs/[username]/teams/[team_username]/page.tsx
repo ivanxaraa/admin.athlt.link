@@ -10,9 +10,10 @@ import { Input } from "@/components/ui/input";
 import RowManipulator from "@/components/ui/row-manipulator";
 import { teamsControl } from "@/controllers/teamsControl";
 import { supabase } from "@/lib/supabase";
-import { TEAMS_INVIATION_TYPES, app } from "@/utils/constants";
+import { GENDERS, TEAMS_INVIATION_TYPES, app } from "@/utils/constants";
 import { copy } from "@/utils/copy";
 import { generic } from "@/utils/generic";
+import selectors from "@/utils/selectors";
 import { getTextInvitation } from "@/utils/texts";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -112,6 +113,8 @@ function Page({
         id: "sport",
         label: "Sport",
         placeholder: "Sport",
+        field_type: "combobox",
+        data: GENDERS,
       },
     ],
   });

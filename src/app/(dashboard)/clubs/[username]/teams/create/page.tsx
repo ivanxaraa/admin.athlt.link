@@ -6,8 +6,9 @@ import GroupForm from "@/components/ui/group-form";
 import Heading1 from "@/components/ui/heading-1";
 import { clubsControl } from "@/controllers/clubsControl";
 import { teamsControl } from "@/controllers/teamsControl";
-import { TEAMS_INVIATION_TYPES } from "@/utils/constants";
+import { GENDERS, TEAMS_INVIATION_TYPES } from "@/utils/constants";
 import { generic } from "@/utils/generic";
+import selectors from "@/utils/selectors";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -61,11 +62,15 @@ function Page({ params }: { params: { username: string } }) {
         id: "gender",
         label: "Gender",
         placeholder: "Gender",
+        field_type: "combobox",
+        data: GENDERS,
       },
       {
         id: "sport",
         label: "Sport",
         placeholder: "Sport",
+        field_type: "combobox",
+        data: selectors.sports,
       },
     ],
   });

@@ -31,3 +31,9 @@ export const TEAMS_INVIATION_TYPES = {
   FREE: "Free",
   VERIFICATION: "Verification Free",
 };
+
+export const GENDERS = [
+  { value: "male", label: "Male" },
+  { value: "female", label: "Female" },
+  { value: "other", label: "Other" },
+];
