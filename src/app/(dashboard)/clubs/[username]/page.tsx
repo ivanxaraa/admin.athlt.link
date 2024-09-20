@@ -31,7 +31,7 @@ import { Switch } from "@/components/ui/switch";
 import { Reorder, useDragControls } from "framer-motion";
 import Link from "next/link";
 
-const Item = ({ item }: any) => {
+const Item = ({ item, username }: any) => {
   const router = useRouter();
   const controls = useDragControls();
   return (
@@ -40,7 +40,7 @@ const Item = ({ item }: any) => {
         <GripVertical onPointerDown={(e) => controls.start(e)} />
         <div
           className="flex items-center gap-4 w-full"
-          onClick={() => router.push(`/clubs/albion/teams/${item.username}`)}
+          onClick={() => router.push(`/clubs/${username}/teams/${item.username}`)}
         >
           <Avatar className="size-8">
             <AvatarImage src={item.image} />
@@ -458,7 +458,7 @@ function Page({ params }: { params: { username: string } }) {
               className="flex flex-col gap-2"
             >
               {teams.map((item: any, index: any) => (
-                <Item item={item} key={item.id} />
+                <Item key={item.id} item={item} username={username} />
               ))}
             </Reorder.Group>
           </div>
