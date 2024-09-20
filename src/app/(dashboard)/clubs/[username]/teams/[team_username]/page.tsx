@@ -108,13 +108,15 @@ function Page({
         id: "gender",
         label: "Gender",
         placeholder: "Gender",
+        field_type: "combobox",
+        data: GENDERS,
       },
       {
         id: "sport",
         label: "Sport",
         placeholder: "Sport",
         field_type: "combobox",
-        data: GENDERS,
+        data: selectors.sports,
       },
     ],
   });
