@@ -20,7 +20,7 @@ import GroupForm from "@/components/ui/group-form";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { copy } from "@/utils/copy";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Combobox } from "@/components/ui/combobox";
 import selectors from "@/utils/selectors";
 import RowManipulator from "@/components/ui/row-manipulator";
@@ -40,7 +40,9 @@ const Item = ({ item, username }: any) => {
         <GripVertical onPointerDown={(e) => controls.start(e)} />
         <div
           className="flex items-center gap-4 w-full"
-          onClick={() => router.push(`/clubs/${username}/teams/${item.username}`)}
+          onClick={() =>
+            router.push(`/clubs/${username}/teams/${item.username}`)
+          }
         >
           <Avatar className="size-8">
             <AvatarImage src={item.image} />
@@ -96,11 +98,16 @@ const Item = ({ item, username }: any) => {
 
 function Page({ params }: { params: { username: string } }) {
   const { username } = params;
+
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [club, setClub] = useState<any>({});
   const [teams, setTeams] = useState<any>([]);
+
+  const sectionFromUrl = searchParams.get("section") || "Information";
   const [activals, setActivals] = useState<{ section: any }>({
-    section: "Information",
+    section: sectionFromUrl,
   });
 
   const inputChange = (key: string, value: any) => {
@@ -245,6 +252,11 @@ function Page({ params }: { params: { username: string } }) {
       ...prev,
       [key]: data,
     }));
+
+    // Update the URL without reloading the page
+    const params = new URLSearchParams(searchParams);
+    params.set("section", data);
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
 
   const actions = {
@@ -327,7 +339,7 @@ function Page({ params }: { params: { username: string } }) {
       </Heading1>
 
       {/* tabs */}
-      <div className="flex items-center gap-4  mt-4">
+      <div className="flex items-center gap-4 mt-4">
         {["Information", "Teams"].map((section, index) => (
           <button
             key={index}

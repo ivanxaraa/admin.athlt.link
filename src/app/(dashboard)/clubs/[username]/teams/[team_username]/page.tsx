@@ -148,7 +148,7 @@ function Page({
   return (
     <>
       <Heading1
-        back={`/clubs/${username}`}
+        back={`/clubs/${username}?section=Teams`}
         buttons={[
           { label: "Invite", click: () => invite("paid") },
           {
