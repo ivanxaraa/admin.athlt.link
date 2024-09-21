@@ -71,12 +71,12 @@ function Page({ params }: { params: { username: string } }) {
         data: selectors.states,
         field_type: "combobox",
       },
-      {
-        id: "county",
-        label: "County",
-        data: selectors.counties,
-        field_type: "combobox",
-      },
+      // {
+      //   id: "county",
+      //   label: "County",
+      //   data: selectors.counties,
+      //   field_type: "combobox",
+      // },
       {
         id: "website",
         label: "Website",
