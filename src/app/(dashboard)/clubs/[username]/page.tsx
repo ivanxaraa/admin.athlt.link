@@ -30,6 +30,7 @@ import { supabase } from "@/lib/supabase";
 import { Switch } from "@/components/ui/switch";
 import { Reorder, useDragControls } from "framer-motion";
 import Link from "next/link";
+import DialogDelete from "@/components/shared/dialog-delete";
 
 const Item = ({ item, username }: any) => {
   const router = useRouter();
@@ -428,15 +429,13 @@ function Page({ params }: { params: { username: string } }) {
           {/* buttons */}
           <GroupForm>
             <div className="flex justify-end items-center w-full col-span-2 gap-4">
-              <Button
-                variant="destructive"
-                onClick={() => {
+              <DialogDelete
+                action={() => {
                   clubsControl.delete(club);
                   router.back();
                 }}
-              >
-                Delete
-              </Button>
+                button={<Button variant="destructive">Delete</Button>}
+              />
               <Button
                 onClick={() => {
                   clubsControl.update(club);
