@@ -437,9 +437,9 @@ function Page({ params }: { params: { username: string } }) {
                 button={<Button variant="destructive">Delete</Button>}
               />
               <Button
-                onClick={() => {
-                  clubsControl.update(club);
-                  router.push(`${club.username}`);
+                onClick={async () => {
+                  const updated = await clubsControl.update(club);
+                  if (updated) router.push(`${club.username}`);
                 }}
               >
                 Save Changes

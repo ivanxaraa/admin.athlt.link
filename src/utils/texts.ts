@@ -13,6 +13,8 @@ Connect to your team costs only $${generic.number.toDecimal(
       club.fee
     )} for the full season.
 
+On the app Dashboard, access TeamLink and enter the team code
+
 Use this link to download the app.
 www.athlt.link`;
   },
@@ -22,6 +24,8 @@ www.athlt.link`;
 Team code: *${code}*
 
 Connect to your team it's free for the full season.
+
+On the app Dashboard, access TeamLink and enter the team code
 
 Use this link to download the app.
 www.athlt.link`;
@@ -37,6 +41,8 @@ Connect to your team costs only $${generic.number.toDecimal(
       club.fee
     )} for the full season.
 As a special offer you can verify your ID for free.
+
+On the app Dashboard, access TeamLink and enter the team code
 
 Use this link to download the app.
 www.athlt.link`;

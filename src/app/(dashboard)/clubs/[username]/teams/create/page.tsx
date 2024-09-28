@@ -72,6 +72,18 @@ function Page({ params }: { params: { username: string } }) {
         field_type: "combobox",
         data: selectors.sports,
       },
+      {
+        id: "season",
+        label: "Season",
+        placeholder: "Season",
+        field_type: "combobox",
+        data: [
+          { value: "2024", label: "2024" },
+          { value: "2024/25", label: "2024/25" },
+          { value: "2025", label: "2025" },
+          { value: "2025/2026", label: "2025/2026" },
+        ],
+      },
     ],
   });
 

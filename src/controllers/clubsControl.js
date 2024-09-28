@@ -103,15 +103,20 @@ export const clubsControl = {
   },
 
   update: async (club, clubDefault) => {
-    if (await clubsControl.validate(club)) return;
+    if (await clubsControl.validate(club)) return false;
     const { data, error } = await supabase
       .from(TABLE)
       .update(club)
       .eq("id", club.id);
-    if (error) return toast.error("Something went wrong");
+    if (error) {
+      toast.error("Something went wrong");
+      return false;
+    }
     toast.success(`Club updated successfully!`);
     if (generic.misc.isFile(club.logo))
       clubsControl.misc.uploadImage(club.logo, club.id, BUCKET);
+
+    return true;
   },
   create: async (data) => {
     const { data: createdClub, error } = await supabase
