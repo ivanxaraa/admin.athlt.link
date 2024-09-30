@@ -92,16 +92,16 @@ export function DataTable<TData, TValue>({
             {!hide?.filter && (
               <div className="flex w-full items-center gap-4">
                 <Input
-                  placeholder="Filter by username..."
+                  placeholder="Filter by username or name..."
                   value={
                     (table.getColumn("username")?.getFilterValue() as string) ??
                     ""
                   }
-                  onChange={(event) =>
-                    table
-                      .getColumn("username")
-                      ?.setFilterValue(event.target.value)
-                  }
+                  onChange={(event) => {
+                    const filterValue = event.target.value;
+                    table.getColumn("username")?.setFilterValue(filterValue);
+                    table.getColumn("name")?.setFilterValue(filterValue);
+                  }}
                   className="max-w-sm !border text-xs"
                 />
               </div>
