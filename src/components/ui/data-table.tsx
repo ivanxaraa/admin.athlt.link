@@ -92,7 +92,7 @@ export function DataTable<TData, TValue>({
             {!hide?.filter && (
               <div className="flex w-full items-center gap-4">
                 <Input
-                  placeholder="Filter by username or name..."
+                  placeholder="Filter by username"
                   value={
                     (table.getColumn("username")?.getFilterValue() as string) ??
                     ""

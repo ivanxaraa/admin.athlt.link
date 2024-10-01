@@ -63,6 +63,20 @@ export const columns = (caller?: { handleActivals: Function }) => [
   {
     accessorKey: "username",
     header: "Username",
+    filterFn: (row: any, columnId: any, filterValue: any) => {
+      // Extract the username and full_name values from the row
+      const username = row.getValue("username");
+      const fullName = row.getValue("full_name");
+
+      // Apply your custom filter logic
+      const filterText = filterValue.toLowerCase();
+
+      // Return true if either username or full_name matches the filter value
+      return (
+        username?.toLowerCase().includes(filterText) ||
+        fullName?.toLowerCase().includes(filterText)
+      );
+    },
   },
   {
     accessorKey: "full_name",
