@@ -10,7 +10,12 @@ import { Input } from "@/components/ui/input";
 import RowManipulator from "@/components/ui/row-manipulator";
 import { teamsControl } from "@/controllers/teamsControl";
 import { supabase } from "@/lib/supabase";
-import { GENDERS, TEAMS_INVIATION_TYPES, app } from "@/utils/constants";
+import {
+  GENDERS,
+  SEASONS,
+  TEAMS_INVIATION_TYPES,
+  app,
+} from "@/utils/constants";
 import { copy } from "@/utils/copy";
 import { generic } from "@/utils/generic";
 import selectors from "@/utils/selectors";
@@ -123,12 +128,7 @@ function Page({
         label: "Season",
         placeholder: "Season",
         field_type: "combobox",
-        data: [
-          { value: "2024", label: "2024" },
-          { value: "2024/25", label: "2024/25" },
-          { value: "2025", label: "2025" },
-          { value: "2025/2026", label: "2025/2026" },
-        ],
+        data: SEASONS.map((x: any) => ({ value: x, label: x })),
       },
     ],
   });

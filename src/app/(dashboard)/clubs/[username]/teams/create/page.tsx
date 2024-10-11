@@ -6,7 +6,7 @@ import GroupForm from "@/components/ui/group-form";
 import Heading1 from "@/components/ui/heading-1";
 import { clubsControl } from "@/controllers/clubsControl";
 import { teamsControl } from "@/controllers/teamsControl";
-import { GENDERS, TEAMS_INVIATION_TYPES } from "@/utils/constants";
+import { GENDERS, SEASONS, TEAMS_INVIATION_TYPES } from "@/utils/constants";
 import { generic } from "@/utils/generic";
 import selectors from "@/utils/selectors";
 import { useRouter } from "next/navigation";
@@ -77,12 +77,7 @@ function Page({ params }: { params: { username: string } }) {
         label: "Season",
         placeholder: "Season",
         field_type: "combobox",
-        data: [
-          { value: "2024", label: "2024" },
-          { value: "2024/25", label: "2024/25" },
-          { value: "2025", label: "2025" },
-          { value: "2025/2026", label: "2025/2026" },
-        ],
+        data: SEASONS.map((x: any) => ({ value: x, label: x })),
       },
     ],
   });
