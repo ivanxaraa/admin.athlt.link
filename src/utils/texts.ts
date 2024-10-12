@@ -7,7 +7,7 @@ export const getTextInvitation = {
       team.name
     } on ATHLT, the all in one profile page for athletes.
 
-On the app Dashboard, access TeamLink and enter the team code: *${code}*
+On the app access Athletics - Add new - Enter team code: *${code}*
 
 Connect to your team costs only $${generic.number.toDecimal(
       club.fee
@@ -19,7 +19,7 @@ www.athlt.link`;
   free: (club: any, team: any, code: string) => {
     return `Hey, you’ve been invited to join ${club.name} ${team.name} on ATHLT, the all in one profile page for athletes.
 
-On the app Dashboard, access TeamLink and enter the team code: *${code}*
+On the app access Athletics - Add new - Enter team code: *${code}*
 
 Connect to your team it's free for the full season.
 
@@ -31,7 +31,7 @@ www.athlt.link`;
       team.name
     } on ATHLT, the all in one profile page for athletes.
 
-On the app Dashboard, access TeamLink and enter the team code: *${code}*
+On the app access Athletics - Add new - Enter team code: *${code}*
 
 Connect to your team costs only $${generic.number.toDecimal(
       club.fee
