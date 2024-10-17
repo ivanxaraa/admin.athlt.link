@@ -14,7 +14,7 @@ Connect to your team costs only $${generic.number.toDecimal(
     )} for the full season.
 
 Use this link to download the app.
-www.athlt.link`;
+www.athlt.link/download`;
   },
   free: (club: any, team: any, code: string) => {
     return `Hey, you’ve been invited to join ${club.name} ${team.name} on ATHLT, the all in one profile page for athletes.
@@ -24,7 +24,7 @@ On the app access Athletics - Add new - Enter team code: *${code}*
 Connect to your team it's free for the full season.
 
 Use this link to download the app.
-www.athlt.link`;
+www.athlt.link/download`;
   },
   freeVerification: (club: any, team: any, code: string) => {
     return `Hey, you’ve been invited to join ${club.name} ${
@@ -39,6 +39,6 @@ Connect to your team costs only $${generic.number.toDecimal(
 As a special offer you can verify your ID for free.
 
 Use this link to download the app.
-www.athlt.link`;
+www.athlt.link/download`;
   },
 };
