@@ -29,6 +29,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChevronDown, Columns3, Plus } from "lucide-react";
+import Link from "next/link";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -38,6 +39,11 @@ interface DataTableProps<TData, TValue> {
     icon?: any;
     label: string;
     click: Function;
+  }[];
+  links?: {
+    icon?: any;
+    label: string;
+    href: string;
   }[];
   actions?: {
     custom?: {
@@ -57,6 +63,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   buttons,
+  links,
   actions,
   hide,
   rowClick,
@@ -151,6 +158,19 @@ export function DataTable<TData, TValue>({
                     )}
                     <span className="ml-2 text-xs">{button.label}</span>
                   </Button>
+                ))}
+              {links &&
+                links.map((link, index) => (
+                  <Link href={link.href}>
+                    <Button key={index}>
+                      {link.icon ? (
+                        link.icon
+                      ) : (
+                        <Plus color="white" size={16} strokeWidth={1} />
+                      )}
+                      <span className="ml-2 text-xs">{link.label}</span>
+                    </Button>
+                  </Link>
                 ))}
               {!hide?.columns && (
                 <DropdownMenu>

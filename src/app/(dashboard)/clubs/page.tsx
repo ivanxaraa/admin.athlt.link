@@ -43,9 +43,11 @@ const Page = () => {
             click: () => copy("https://admin.athlt.link/forms/create-club"),
             icon: <ClipboardPlus size={16} strokeWidth={1} />,
           },
+        ]}
+        links={[
           {
             label: "Create Club",
-            click: () => router.push("clubs/create"),
+            href: "clubs/create",
           },
         ]}
         rowClick={(row: any) => router.push(`clubs/${row.username}`)}

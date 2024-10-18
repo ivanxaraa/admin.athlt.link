@@ -33,10 +33,10 @@ const Page = () => {
         columns={columns({ actions: [{ label: "View", click: actions.view }] })}
         data={teams}
         hide={{ columns: true }}
-        buttons={[
+        links={[
           {
             label: "Create Team",
-            click: () => router.push("teams/create"),
+            href: "teams/create",
           },
         ]}
       />

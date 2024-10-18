@@ -14,8 +14,6 @@ const Page = () => {
 
   const getAthletes = async () => {
     const data = await athletesControl.get();
-    console.log(data);
-
     setAthletes(data);
   };
 
