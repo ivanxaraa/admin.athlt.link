@@ -281,6 +281,8 @@ function Page({ params }: { params: { username: string } }) {
     fetch();
   }, []);
 
+  console.log({ club });
+
   const handleReorder = async (newOrder: any[]) => {
     try {
       setTeams(newOrder);

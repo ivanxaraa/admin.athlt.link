@@ -21,6 +21,9 @@ export const clubsControl = {
         .select()
         .eq("username", username)
         .single();
+
+      console.log({ data });
+
       return data;
     },
 
@@ -119,6 +122,9 @@ export const clubsControl = {
     return true;
   },
   create: async (data) => {
+    const logo = data.logo;
+    delete data.logo;
+
     const { data: createdClub, error } = await supabase
       .from(TABLE)
       .insert(data)
@@ -128,9 +134,13 @@ export const clubsControl = {
       toast.error("Something went wrong");
       return;
     }
+
     const club = createdClub[0];
-    if (generic.misc.isFile(club.logo))
-      clubsControl.misc.uploadImage(club.logo, club.id, BUCKET);
+
+    if (generic.misc.isFile(logo)) {
+      console.log("here");
+      await clubsControl.misc.uploadImage(logo, club.id, BUCKET);
+    }
     return club;
   },
   delete: async (club) => {
@@ -140,19 +150,27 @@ export const clubsControl = {
   },
   misc: {
     uploadImage: async (file, id, bucket) => {
+      console.log(file, id, bucket);
+
       const { error: errorLogo } = await supabase.storage
         .from(bucket)
         .upload(id, file, {
           cacheControl: "no-cache",
           upsert: true,
         });
+      console.log(errorLogo);
+
       if (errorLogo) toast.error("Error uploading image!");
-      await supabase
+      const responseUpdate = await supabase
         .from(TABLE)
         .update({
           logo: `${app.storage_url}/${BUCKET}/${id}`,
         })
         .eq("id", id);
+
+      console.log(`${app.storage_url}/${BUCKET}/${id}`);
+
+      console.log({ responseUpdate });
     },
   },
 };
