@@ -161,8 +161,8 @@ export function DataTable<TData, TValue>({
                 ))}
               {links &&
                 links.map((link, index) => (
-                  <Link href={link.href}>
-                    <Button key={index}>
+                  <Link key={index} href={link.href}>
+                    <Button>
                       {link.icon ? (
                         link.icon
                       ) : (
