@@ -22,8 +22,6 @@ export const clubsControl = {
         .eq("username", username)
         .single();
 
-      console.log({ data });
-
       return data;
     },
 

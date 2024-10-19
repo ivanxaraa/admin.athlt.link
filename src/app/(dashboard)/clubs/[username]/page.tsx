@@ -268,20 +268,22 @@ function Page({ params }: { params: { username: string } }) {
 
   useEffect(() => {
     const fetch = async () => {
+      console.log(username);
+
       const clubInfo = await clubsControl.get.byUsername(username);
-      if (!clubInfo) {
-        toast.error("Club not found");
-        router.back();
-        return;
-      }
+      console.log({ clubInfo });
+
+      // if (!clubInfo) {
+      //   toast.error("Club not found");
+      //   router.back();
+      //   return;
+      // }
       setClub(clubInfo);
       const teamsInfo = await clubsControl.get.teams(clubInfo.id);
       setTeams(teamsInfo);
     };
     fetch();
   }, []);
-
-  console.log({ club });
 
   const handleReorder = async (newOrder: any[]) => {
     try {
@@ -332,9 +334,11 @@ function Page({ params }: { params: { username: string } }) {
               }
             },
           },
+        ]}
+        links={[
           {
             label: "Club Dashboard",
-            click: () => router.push(`${app.website_url}/d/${club.username}`),
+            href: `${app.website_url}/d/${club.username}`,
           },
         ]}
       >

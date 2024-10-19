@@ -10,9 +10,13 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
     label: string;
     click?: () => void;
   }[];
+  links?: {
+    label: string;
+    href: string;
+  }[];
 };
 
-const Heading1 = ({ children, back, buttons }: Props) => {
+const Heading1 = ({ children, back, buttons, links }: Props) => {
   return (
     <div className="flex h-10 items-center gap-2 font-light pb-4 w-full">
       {back && (
@@ -30,6 +34,12 @@ const Heading1 = ({ children, back, buttons }: Props) => {
             <Button key={index} onClick={button.click}>
               {button?.label}
             </Button>
+          ))}
+        {links &&
+          links.map((button, index) => (
+            <Link href={button.href} key={index}>
+              <Button>{button?.label}</Button>
+            </Link>
           ))}
       </div>
     </div>
